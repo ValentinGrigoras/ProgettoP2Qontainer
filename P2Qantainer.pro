@@ -35,7 +35,8 @@ SOURCES += \
     Controller/controller.cpp \
     View/aggiungiview.cpp \
     Model/xbox360.cpp \
-    Model/xboxone.cpp
+    Model/xboxone.cpp \
+    Model/exceptions.cpp
 
 
 
@@ -52,7 +53,8 @@ HEADERS += \
     View/aggiungiview.h \
     Model/xbox360.h \
     Model/xboxone.h \
-    Model/dlinkedlist.h
+    Model/dlinkedlist.h \
+    Model/exceptions.h
 
 
 
