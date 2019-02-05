@@ -14,7 +14,7 @@ Controller::~Controller()
 
 void Controller::slot_AddGame() const
 {
-   //string nome = insert_view->getNome().toUtf8().constData();
+   string nome = insert_view->getNome().toUtf8().constData();
 
 }
 

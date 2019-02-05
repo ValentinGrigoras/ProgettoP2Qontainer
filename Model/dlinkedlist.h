@@ -1,20 +1,23 @@
 #ifndef DLINKEDLIST_H
 #define DLINKEDLIST_H
-#include "exceptions.h"
+
+#include "Exceptions/invaliditerator.h"
+#include "Exceptions/pasttheend.h"
+#include<iostream>
+
+using namespace std;
 template <class T>
 class DLinkedList{
 
 private:
     class Nodo{
-    public:
-        T info;
-        Nodo * next;
-        Nodo* prev;
-        Nodo(); // implica che il costruttore di default di T sia disponibile
-        Nodo(const T&, Nodo * n=nullptr, Nodo * p=nullptr);// costrutture a 1,2,3 parametri
-        //mi va bene il distruttore standard
-
-    };
+        public:
+            T info;
+            Nodo* prev, *next;
+            Nodo(); //implica che il costruttore di default di T sia disponibile
+            Nodo(const T&, Nodo* =nullptr, Nodo* =nullptr); //
+            T& operator*();
+        };
     Nodo * first, *last;
 public:
     class const_list_iterator{
@@ -31,6 +34,8 @@ public:
         const_list_iterator operator--(int);
         const Nodo& operator*() const;
         const Nodo* operator->() const;
+        bool operator==(const_list_iterator) const;
+            bool operator!=(const_list_iterator) const;
     };
 
     class list_iterator{
@@ -45,12 +50,14 @@ public:
       list_iterator operator++(int); //post-increment, iterator++
       list_iterator& operator--(); //pre-decrement, --iterator
       list_iterator operator--(int); //post-decrement, interator--
-      Nodo& operator*() const;
-      Nodo* operator->()const;
+      T& operator*() const;
+      T* operator->()const;
       //convertitore di tipo: da list_iterator a const_list_iterator
       operator const_list_iterator()const;
+      bool operator==(list_iterator) const;
+          bool operator!=(list_iterator) const;
     };
-
+DLinkedList(): first(nullptr),last(nullptr) {}
     bool operator== (const DLinkedList<T>&)const;
     bool operator!= (const DLinkedList<T>&)const;
 
@@ -75,14 +82,16 @@ public:
     friend list_iterator;
 
 };
-//implementazione metodi di nodo
-//COSTRUTTORE DI DEFAULT
 template <class T>
-DLinkedList<T>::Nodo::Nodo():next(nullptr), prev(nullptr){}
+DLinkedList<T>::Nodo::Nodo(): prev(nullptr), next(nullptr) {}
 
-//COSTRUTTORE A 1,2,3 PARAMETRI
-template<class T>
-DLinkedList<T>::Nodo::Nodo(const T& i, Nodo* n, Nodo* p):info(i), next(n), prev(p){}
+template <class T>
+DLinkedList<T>::Nodo::Nodo(const T& i, Nodo* p, Nodo* n): info(i), prev(p), next(n) {}
+
+template <class T>
+T& DLinkedList<T>::Nodo::operator*(){
+    return info;
+}
 
 //implementazione metodi di list_iterator
 //COSTRUTTORE DI DEFAULT
@@ -93,13 +102,15 @@ DLinkedList<T>::list_iterator::list_iterator(): p(nullptr), past_the_end(false){
 template<class T>
 DLinkedList<T>::list_iterator::list_iterator(Nodo* ptr, bool pte):p(ptr), past_the_end(pte){}
 
-//OPERATORE DI DEREFERENZIAZIONE DI LIST_ITERATOR
-template<class T>
-typename DLinkedList<T>::Nodo& DLinkedList<T>::list_iterator::operator*() const {return &p;}
-
 //OPERATORE DI ACCESSO A MEMBRO DI LIST:ITERATOR
 template <class T>
-typename DLinkedList<T>::Nodo* DLinkedList<T>::list_iterator::operator->() const {return p;} // gli do l'indirizzo dell'oggetto
+T* DLinkedList<T>::list_iterator::operator->() const {return &(p->info);} // gli do l'indirizzo dell'oggetto
+
+//OPERATORE DI DEREFERENZIAZIONE DI LIST_ITERATOR
+template<class T>
+T& DLinkedList<T>::list_iterator::operator*() const {return p->info;}
+
+
 
 //OPERATORE DI DEREFERENZIAZIONE DI LIST_ITERATOR
 template<class T>
@@ -246,10 +257,10 @@ typename DLinkedList<T>::const_list_iterator DLinkedList<T>::const_list_iterator
 
 }
 //PUSH BACK DI DLINKED LIST
-template<class T>
-void DLinkedList<T>::push_back(const T& ogg){
-    last= new Nodo(ogg, last, nullptr);
-    (first == nullptr)? first=last:(last->prev)->next=last;
+template <class T>
+void DLinkedList<T>::push_back(const T& t){
+    last=new Nodo(t,last,nullptr);
+    first==nullptr ? first=last : (last->prev)->next=last;
 }
 //PUSH FRONT DI DLINKED LIST
 template<class T>
@@ -344,23 +355,31 @@ return aux;
 template <class T>
 typename DLinkedList<T>::list_iterator DLinkedList<T>::insert(typename DLinkedList<T>::list_iterator it, const T& ogg){
 
-    if(*it==first)
+    if(it.p==first)
     {
         push_front(ogg);
-        *it=first;
+        it.p=first;
     }
-    else if(*it->past_the_end)
+    else if(it.past_the_end)
     {
         push_back(ogg);
-        *it=last;
+        it.p=last;
     }
     else{
-        *it->prev->next = new Nodo(ogg,*it->prev,*it);
-        *it->prev = *it->prev->next;
+        it.p->prev->next = new Nodo(ogg,it.p->prev,it.p);
+        it.p->prev = it.p->prev->next;
         it--;
     }
 return it;
 
+}
+template <class T>
+bool DLinkedList<T>::list_iterator::operator==(typename DLinkedList<T>::list_iterator it) const{
+  return p==it.p;
+}
+template <class T>
+bool DLinkedList<T>::list_iterator::operator!=(typename DLinkedList<T>::list_iterator it) const{
+  return p!=it.p;
 }
 
 #endif // DLINKEDLIST_H

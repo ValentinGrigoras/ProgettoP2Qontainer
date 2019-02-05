@@ -10,7 +10,7 @@ private:
      string nome;
      int annoRilascio;
      int meseRilascio;
-     char genere;
+     string genere;
      int classificazionePegi;
      string sviluppatore;
      bool multiplayer;
@@ -19,13 +19,13 @@ private:
      double prezzo;
 
 public:
-    Gioco(string pNome="", int pAnnoRilascio=2019, int pMeseRilascio=1, char pGenere='FPS', int pClassificazionePegi=18, string pSviluppatore="EaSports", bool pMultiplayer=true, bool p4k=false, bool pOnline=true, double pPrezzo=0.0);//costruttore a 5 parametri con valori di default
+    Gioco(string pNome="", int pAnnoRilascio=2019, int pMeseRilascio=1, string pGenere="FPS", int pClassificazionePegi=18, string pSviluppatore="EaSports", bool pMultiplayer=true, bool p4k=false, bool pOnline=true, double pPrezzo=0.0);//costruttore a 5 parametri con valori di default
 
     //getter
     string getNome() const;
     int getAnnoRilascio()const;
     int getMeseRilascio()const;
-    char getGenere()const;
+    string getGenere()const;
     int getClassificazionePegi()const;
     string getSviluppatore()const;
     bool getMultiplayer()const;

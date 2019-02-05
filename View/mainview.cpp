@@ -176,7 +176,7 @@ void MainView::createMenuBar()
 
 }
 
-MainView::MainView(QWidget *parent) : QWidget(parent),controller(new Controller(this))
+MainView::MainView(QWidget *parent) : QWidget(parent), controller(new Controller(this))
 {
 
     this->setFixedSize(1200,600);
@@ -201,6 +201,10 @@ MainView::MainView(QWidget *parent) : QWidget(parent),controller(new Controller(
     //connect
     connect(menu_exit,SIGNAL(triggered()),this,SLOT(close()));
     connect(btn_aggiungi,SIGNAL(clicked()),controller,SLOT(showAggiungiView()));
+     //sconnect(btn_aggiungi,SIGNAL(clicked()),controller,SLOT(showInsertView()));
     //connect(btn_aggiungi,SIGNAL(clicked()),this,SLOT(aggiungiEntry()));
 }
+
+
+
 

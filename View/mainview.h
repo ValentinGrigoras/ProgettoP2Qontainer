@@ -17,7 +17,10 @@
 #include <QFormLayout>
 #include<QGridLayout>
 #include "Controller/controller.h"
-#include "aggiungiview.h"
+
+
+
+class Controller;
 
 
 class MainView : public QWidget
@@ -75,6 +78,8 @@ QGroupBox * services_box;
 QListView * listItem;
 
 Controller *controller;
+InsertView * insert_v;
+
 
 
 //metodi per creare le varie box

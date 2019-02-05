@@ -12,10 +12,10 @@ unsigned short Ps3::getAnnoRilascioMinimo() const // 11 novembre 2006
 
 double Ps3::PrezzoConsigliato() const
 {
-    switch(getGenere()){
-    case 'Sportivo': return (getAnnoRilascio() % 2006)+(2.1*10);
 
-    case 'FPS': return (getAnnoRilascio() % 2006)+(2.0*10);
-    default: return 0;
-    }
+    if(getGenere()=="Sportivo") return (getAnnoRilascio() % 2006)+(2.1*10);
+
+    if(getGenere()=="FPS") return (getAnnoRilascio() % 2006)+(2.0*10);
+
+    return 0;
 }

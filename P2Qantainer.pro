@@ -31,16 +31,15 @@ SOURCES += \
     Model/ps4.cpp \
     Model/ps3.cpp \
     Model/xbox.cpp \
-    View/mainview.cpp \
-    Controller/controller.cpp \
-    View/aggiungiview.cpp \
     Model/xbox360.cpp \
     Model/xboxone.cpp \
-    Model/exceptions.cpp
-
-
-
-
+    Model/gestionegiochi.cpp \
+    View/mainview.cpp \
+    View/insertview.cpp \
+    Controller/controller.cpp \
+    Exceptions/exceptions.cpp \
+    Exceptions/pasttheend.cpp \
+    Exceptions/invaliditerator.cpp
 
 HEADERS += \
      Model/gioco.h \
@@ -48,13 +47,17 @@ HEADERS += \
     Model/ps4.h \
     Model/ps3.h \
     Model/xbox.h \
-    View/mainview.h \
-    Controller/controller.h \
-    View/aggiungiview.h \
     Model/xbox360.h \
     Model/xboxone.h \
     Model/dlinkedlist.h \
-    Model/exceptions.h
+    Model/gestionegiochi.h \
+    View/mainview.h \
+    View/insertview.h \
+    Controller/controller.h \
+    Exceptions/exceptions.h \
+    Exceptions/pasttheend.h \
+    Exceptions/invaliditerator.h
+
 
 
 
