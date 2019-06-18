@@ -2,25 +2,32 @@
 #define CONTROLLER_H
 #include <QObject>
 #include "Model/gestionegiochi.h"
+#include "View/menubar.h"
+#include "View/layoutinserisci.h"
+#include"View/layoutvisualizzagiochi.h"
 class InsertView;
 class MainView;
 
-class Controller : public QObject
+class Controller : public QWidget
 {
     Q_OBJECT
 private:
-MainView* view;
-InsertView* insert_view;
-GestioneGiochi * container;
+MenuBar* menuBar;
+GestioneGiochi * modello;
+LayoutInserisci* inserisciLayout;
+QHBoxLayout* mainLayout;
+LayoutVisualizzaGiochi *visualizzaLayout;
 public:
-Controller();
-    explicit Controller( MainView * , InsertView * v = nullptr,  QObject *parent = nullptr);
+Controller(GestioneGiochi*, QWidget* =nullptr);
 ~Controller();
 signals:
 
 public slots:
-void slot_AddGame()const;
-void showAggiungiView();
+ void slotShowInserisci()const;
+ void slotShowVisualizza()const;
+void slotAggiungiElemento();
+  void slotDataChanged(bool)const;
+      void slotSaveData()const;
 };
 
 #endif // CONTROLLER_H

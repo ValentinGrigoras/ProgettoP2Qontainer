@@ -1,6 +1,9 @@
 #ifndef GIOCO_H
 #define GIOCO_H
 #include<string>
+#include <sstream>
+#include <iostream>
+#include <iomanip>
 
 using std::string;
 
@@ -11,26 +14,29 @@ private:
      int annoRilascio;
      int meseRilascio;
      string genere;
-     int classificazionePegi;
+     string classificazionePegi;
      string sviluppatore;
      bool multiplayer;
      bool supporto_4k;
      bool online;
      double prezzo;
+     string descrizione;
 
 public:
-    Gioco(string pNome="", int pAnnoRilascio=2019, int pMeseRilascio=1, string pGenere="FPS", int pClassificazionePegi=18, string pSviluppatore="EaSports", bool pMultiplayer=true, bool p4k=false, bool pOnline=true, double pPrezzo=0.0);//costruttore a 5 parametri con valori di default
+    Gioco(string="", int = 2019, string ="FPS", string ="18", string ="EaSports", bool =true, bool =false, bool =true, double =0.0, string="vuoto");//costruttore a 5 parametri con valori di default
+    Gioco(const Gioco&); // costruttore di copia
 
     //getter
     string getNome() const;
     int getAnnoRilascio()const;
-    int getMeseRilascio()const;
     string getGenere()const;
-    int getClassificazionePegi()const;
+    string getClassificazionePegi()const;
     string getSviluppatore()const;
     bool getMultiplayer()const;
     bool get4k()const;
     bool getOnline()const;
+    double getPrezzo()const;
+    string getDescrizione()const;
 
 
     //setter
@@ -39,10 +45,16 @@ public:
     void setAnnoRilascio(int pAnnoRilascio);
     void setGenere(char pGenere);
     void setClassificazionePegi(int pClassificazionePegi);
+     void setDescrizione(const string &value);
+     void setMultiplayer(const bool pMultiplayer);
+     void set4k(const bool p4k);
+     void setOnline(const bool pOnline);
 
     /*metodo virtuale puro*/
     virtual double PrezzoConsigliato()const =0; // mi calcola il prezzo consigliato in base alla data d'uscita, in base alla piattaforma e in base al genere. Il prezzo rispecchia opprossimamente il prezzo dei gioco al giorno d'oggi.
-    virtual Gioco* Clone() const=0;
+   // virtual Gioco* Clone() const=0;
+    virtual string getTipo()const =0;
+   virtual string getInfo()const;
 
     //distruttore virtuale
     virtual ~Gioco()=default; //c++11
@@ -51,6 +63,10 @@ protected:
     //metodo virtuale puro
 virtual unsigned short int getAnnoRilascioMinimo()const = 0; // questo metodo mi ritorna l'anno minimo che può avere un gioco come anno di rilascio, in quanto coincide con l'anno dell'uscita della piattaforma del gioco. Per esempio il PS3 è uscito nel 2006, quindi non ci possono essere giochi sulla PS3 usciti prima di quella data.
 
+    //operatori
+    virtual bool operator==(const Gioco&) const;
+    virtual bool operator!=(const Gioco&) const;
 };
 
+ std::ostream& operator<<(std::ostream& , const Gioco& );
 #endif // GIOCO_H

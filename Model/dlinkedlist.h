@@ -63,11 +63,11 @@ DLinkedList(): first(nullptr),last(nullptr) {}
 
     bool isEmpty()const;
 
-    list_iterator begin();
-    const_list_iterator begin()const;
+    list_iterator cbegin();
+    const_list_iterator cbegin()const;
 
-    list_iterator end();
-    const_list_iterator end()const;
+    list_iterator cend();
+    const_list_iterator cend()const;
 
     //METODI DI MODIFICA DEL DOUBLY LINKED LIST
     void push_back(const T& ogg);
@@ -182,25 +182,25 @@ DLinkedList<T>::list_iterator::operator const_list_iterator()const{
 
 //METODO BEGIN DEL LIST_ITERATOR
 template <class T>
-typename DLinkedList<T>::list_iterator DLinkedList<T>::begin(){
+typename DLinkedList<T>::list_iterator DLinkedList<T>::cbegin(){
   return list_iterator(first,false);
 }
 
 //METODO BEGIN DEL CONST_LIST_ITERATOR
 template <class T>
-typename DLinkedList<T>::const_list_iterator DLinkedList<T>::begin()const{
+typename DLinkedList<T>::const_list_iterator DLinkedList<T>::cbegin()const{
   return const_list_iterator(first,false);
 }
 
 //METODO BEGIN DEL LIST_ITERATOR
 template <class T>
-typename DLinkedList<T>::list_iterator DLinkedList<T>::end(){
+typename DLinkedList<T>::list_iterator DLinkedList<T>::cend(){
   return list_iterator(last+1,true);
 }
 
 //METODO BEGIN DEL CONST_LIST_ITERATOR
 template <class T>
-typename DLinkedList<T>::const_list_iterator DLinkedList<T>::end()const{
+typename DLinkedList<T>::const_list_iterator DLinkedList<T>::cend()const{
   return const_list_iterator(last+1,true);
 }
 //OPERATORE PRE INCREMENTO

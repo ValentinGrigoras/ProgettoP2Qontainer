@@ -28,7 +28,6 @@ private:
     QLineEdit * qline_nuovo_gioco_nome;
     QLineEdit * qline_nuovo_gioco_anno;
     QComboBox * combo_nuovo_gioco_genere;
-    QComboBox * combo_nuovo_gioco_piattaforma;
     QComboBox * combo_nuovo_gioco_pegi;
     QLineEdit * qline_nuovo_gioco_sviluppatore;
     QCheckBox * check_nuovo_gioco_multiplayer;

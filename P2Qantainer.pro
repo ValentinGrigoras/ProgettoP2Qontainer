@@ -27,36 +27,50 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
     Model/gioco.cpp \
-    Model/playstation.cpp \
     Model/ps4.cpp \
     Model/ps3.cpp \
-    Model/xbox.cpp \
     Model/xbox360.cpp \
     Model/xboxone.cpp \
     Model/gestionegiochi.cpp \
-    View/mainview.cpp \
-    View/insertview.cpp \
     Controller/controller.cpp \
     Exceptions/exceptions.cpp \
     Exceptions/pasttheend.cpp \
-    Exceptions/invaliditerator.cpp
+    Exceptions/invaliditerator.cpp \
+    View/layoutvisualizzagiochi.cpp \
+    View/giochilistitem.cpp \
+    View/giochilistwidget.cpp \
+    View/menubar.cpp \
+    View/layoutvisualizzaitem.cpp \
+    View/layoutinserisci.cpp \
+    View/comboboxgenere.cpp \
+    View/comboboxanno.cpp \
+    View/comboboxpegi.cpp \
+    View/comboboxtipo.cpp \
+    Exceptions/openfileexception.cpp
 
 HEADERS += \
      Model/gioco.h \
-    Model/playstation.h \
     Model/ps4.h \
     Model/ps3.h \
-    Model/xbox.h \
     Model/xbox360.h \
     Model/xboxone.h \
     Model/dlinkedlist.h \
     Model/gestionegiochi.h \
-    View/mainview.h \
-    View/insertview.h \
     Controller/controller.h \
     Exceptions/exceptions.h \
     Exceptions/pasttheend.h \
-    Exceptions/invaliditerator.h
+    Exceptions/invaliditerator.h \
+    View/layoutvisualizzagiochi.h \
+    View/giochilistitem.h \
+    View/giochilistwidget.h \
+    View/menubar.h \
+    View/layoutvisualizzaitem.h \
+    View/layoutinserisci.h \
+    View/comboboxgenere.h \
+    View/comboboxanno.h \
+    View/comboboxpegi.h \
+    View/comboboxtipo.h \
+    Exceptions/openfileexception.h
 
 
 
@@ -68,3 +82,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 SUBDIRS += \
     P2Qantainer.pro \
+
+RESOURCES += \
+    resources.qrc

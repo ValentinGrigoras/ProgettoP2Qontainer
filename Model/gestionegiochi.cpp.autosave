@@ -35,15 +35,14 @@ void GestioneGiochi::Salva(Gioco *) const
 
     auto it=cbegin();
     while(it!=cend()) {
-        const Gioco* toSave = *it;
+         Gioco* toSave = it->info;
         const QString tipo=QString::fromStdString(toSave->getTipo());
         writer.writeEmptyElement(tipo);
 
 
         writer.writeAttribute("nome",QString::fromStdString(toSave->getNome()));
-        writer.writeAttribute("sesso",QString::fromStdString(toSave->getSesso()));
-        writer.writeAttribute("colore",QString::fromStdString(toSave->getColore()));
-        writer.writeAttribute("path",QString::fromStdString(toSave->getFoto()));
+        writer.writeAttribute("anno",QString("%1").arg(toSave->getAnnoRilascio()));
+        writer.writeAttribute("sviluppatore",QString::fromStdString(toSave->getSviluppatore()));
         writer.writeAttribute("desc",QString::fromStdString(toSave->getDescrizione()));
         writer.writeAttribute("stagione",QString::fromStdString(toSave->getStagione()));
         writer.writeAttribute("numTessuti",QString("%1").arg(toSave->getNumeroTipoTessuti()));

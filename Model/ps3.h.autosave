@@ -14,6 +14,7 @@ protected:
     double PrezzoConsigliato()const;
       virtual ~Ps3() override=default;
     Ps3(const Ps3&);
+   string getTipo()const override;
 
     bool  operator==(const Ps3&) const;
     bool  operator!=(const Ps3&) const;

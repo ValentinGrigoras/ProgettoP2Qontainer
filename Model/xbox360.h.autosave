@@ -8,6 +8,7 @@ public:
     Xbox360();
     virtual unsigned short int getAnnoRilascioMinimo()const; //22 novembre 2005
     double PrezzoConsigliato()const;
+        string getTipo()const override;
 };
 
 #endif // XBOX360_H

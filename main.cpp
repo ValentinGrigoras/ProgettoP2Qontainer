@@ -1,11 +1,14 @@
 #include <QApplication>
-#include "View/mainview.h"
+#include "Controller/controller.h"
+#include "Model/gestionegiochi.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainView f;
-    f.show();
+    Controller  w (new GestioneGiochi());
+        //w.show();
+    a.setWindowIcon(QIcon(":Images/icon.png"));
+    w.show();
 
     return a.exec();
 }

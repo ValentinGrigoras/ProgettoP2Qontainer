@@ -9,6 +9,7 @@ public:
     Ps4();
     virtual unsigned short int getAnnoRilascioMinimo()const; //15 novembre 2013
     double PrezzoConsigliato()const;
+    string getTipo()const override;
 };
 
 #endif // PS4_H
