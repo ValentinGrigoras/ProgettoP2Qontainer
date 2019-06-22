@@ -17,6 +17,7 @@ GestioneGiochi * modello;
 LayoutInserisci* inserisciLayout;
 QHBoxLayout* mainLayout;
 LayoutVisualizzaGiochi *visualizzaLayout;
+LayoutVisualizzaItem* dialog;
 public:
 Controller(GestioneGiochi*, QWidget* =nullptr);
 ~Controller();
@@ -28,6 +29,13 @@ public slots:
 void slotAggiungiElemento();
   void slotDataChanged(bool)const;
       void slotSaveData()const;
+        void slotShowAboutDialog();
+        void slotShowReportBug();
+        void slotLoad();
+         void slotShowModifica();
+         void slotEliminaElemento()const;
+         void slotEliminaDaModello(Gioco*)const;
+        //void slotEliminaDaModello()const;
 };
 
 #endif // CONTROLLER_H

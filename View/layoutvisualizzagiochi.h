@@ -30,8 +30,11 @@ public:
     QPushButton *getBtnModifica() const;
 
 signals:
-
+ void signalElementoSelezionato(bool=true)const;
 public slots:
+    void slotElementoSelezionato(bool= true)const;
+
+    void slotRowChanged()const;
 };
 
 #endif // LAYOUT_VISUALIZZA_H

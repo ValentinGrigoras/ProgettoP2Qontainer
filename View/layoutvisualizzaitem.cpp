@@ -32,6 +32,8 @@ LayoutVisualizzaItem::LayoutVisualizzaItem(GiochiListItem* a, QWidget* parent):
  btnLayout->addWidget(salvaModifica);
  btnLayout->addWidget(btnClose);
 
+
+
  mainLayout->addLayout(btnLayout);
 
 

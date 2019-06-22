@@ -2,91 +2,191 @@
 
 #include <QSaveFile>
 #include <QXmlStreamReader>
+
 #include <QFile>
 #include <QDebug>
 #include"Exceptions/openfileexception.h"
+#include "Model/ps3.h"
+#include "Model/ps4.h"
+#include "Model/xbox360.h"
+#include "Model/xboxone.h"
 
-GestioneGiochi::GestioneGiochi()
+
+GestioneGiochi::GestioneGiochi(string g):lista_giochi(new DLinkedList<Gioco*>()),isDataSaved(true),path(g)
 {
 
 }
 
 GestioneGiochi::~GestioneGiochi()
 {
-    for (DLinkedList<Gioco*>::list_iterator it = lista_giochi->cbegin(); it != lista_giochi->cend(); it++)
-            delete *it;
+    for (DLinkedList<Gioco*>::list_iterator it = lista_giochi->begin(); it != lista_giochi->end(); it++)
+    {
 
+            delete *it;
+}
 }
 
-void GestioneGiochi::Salva(Gioco *) const
+void GestioneGiochi::push_end(Gioco * g)
+{
+    lista_giochi->push_back(g);
+
+isDataSaved=false;
+}
+
+void GestioneGiochi::saveToFile()
 {
     QSaveFile file(QString::fromStdString(path));
     if(!file.open(QIODevice::WriteOnly)) {
         throw OpenFileException("Errore");
     }
 
-    QXmlStreamWriter writer(&file);
+       QXmlStreamWriter writer(&file);
 
-    writer.setAutoFormatting(true); // Per leggibilità del file XML
-    writer.writeStartDocument();    // Scrive le intestazioni XML
-    writer.writeComment("NON MODIFICARE QUESTO FILE!!!!");
+          writer.setAutoFormatting(true); // Per leggibilità del file XML
+          writer.writeStartDocument();    // Scrive le intestazioni XML
+          writer.writeComment("File di salvataggio dell'applicazione. Non modificare a mano.");
 
-    writer.writeStartElement("root");                                // <root>
+          writer.writeStartElement("root");
 
-    auto it=cbegin();
-    while(it!=cend()) {
-        const Gioco* toSave = *it;
-        const QString tipo=QString::fromStdString(toSave->getTipo());
-        writer.writeEmptyElement(tipo);
+          auto it =lista_giochi-> cbegin();
+          while(it!= lista_giochi->cend()){
+                 Gioco* toSave = *it;
 
 
-        writer.writeAttribute("nome",QString::fromStdString(toSave->getNome()));
-        writer.writeAttribute("sesso",QString::fromStdString(toSave->getSesso()));
-        writer.writeAttribute("colore",QString::fromStdString(toSave->getColore()));
-        writer.writeAttribute("path",QString::fromStdString(toSave->getFoto()));
-        writer.writeAttribute("desc",QString::fromStdString(toSave->getDescrizione()));
-        writer.writeAttribute("stagione",QString::fromStdString(toSave->getStagione()));
-        writer.writeAttribute("numTessuti",QString("%1").arg(toSave->getNumeroTipoTessuti()));
+            writer.writeStartElement("Gioco");
+           writer.writeAttribute("tipo", QString::fromStdString(toSave->getTipo()));
 
-        if(tipo=="Maglietta"){
-            const Maglietta* pM= static_cast<const Maglietta*>(toSave);
-            writer.writeAttribute("hasPrinting",pM->getHasPrinting()? "Yes": "No");
-            QString s="%1";
-            s=s.arg(pM->getLunghezzaManica());
-            writer.writeAttribute("lungManica",
-                                  QString::fromStdString(pM->convertLunghezzaToString()));
+           writer.writeStartElement("nome");
+           writer.writeCharacters(QString::fromStdString(toSave->getNome()));
+           writer.writeEndElement();
+           writer.writeStartElement("anno");
+           writer.writeCharacters(QString::fromStdString(toSave->getAnnoRilascio()));
+           writer.writeEndElement();
+           writer.writeStartElement("genere");
+           writer.writeCharacters(QString::fromStdString(toSave->getGenere()));
+           writer.writeEndElement();
+           writer.writeStartElement("pegi");
+           writer.writeCharacters(QString::fromStdString(toSave->getClassificazionePegi()));
+           writer.writeEndElement();
+           writer.writeStartElement("sviluppatore");
+           writer.writeCharacters(QString::fromStdString(toSave->getSviluppatore()));
+           writer.writeEndElement();
+           writer.writeStartElement("multiplayer");
+           writer.writeCharacters(QString::fromStdString(toSave->getMultiplayer()?"yes":"no"));
+           writer.writeEndElement();
+           writer.writeStartElement("s4k");
+           writer.writeCharacters(QString::fromStdString(toSave->get4k()?"yes":"no"));
+           writer.writeEndElement();
+           writer.writeStartElement("online");
+           writer.writeCharacters(QString::fromStdString(toSave->getOnline()?"yes":"no"));
+           writer.writeEndElement();
+           writer.writeStartElement("descrizione");
+           writer.writeCharacters(QString::fromStdString(toSave->getDescrizione()));
+           writer.writeEndElement();
+            writer.writeEndElement();
+               if (writer.hasError()) {// se c'è stato un problema in scrittura interrompe ed esce
+                          throw std::exception();}
 
-        }else if(tipo=="Felpa"){
-            const Felpa* pF= static_cast<const Felpa*>(toSave);
-            writer.writeAttribute("hasZip",pF->getHasZip()? "Yes": "No");
-            writer.writeAttribute("hasPocket",pF->getHasPocket()? "Yes": "No");
+               ++it;
+          }
+          writer.writeEndDocument();  // chiude eventuali tag lasciati aperti e aggiunge una riga vuota alla fine
 
-        }else if(tipo=="Gonna"){
-            const Gonna* pG= static_cast<const Gonna*>(toSave);
-            writer.writeAttribute("tipoGonna",
-                                  QString::fromStdString(pG->convertTipoToString()));
-
-        }else if(tipo=="Pantaloni"){
-            const Pantaloni* pP= static_cast<const Pantaloni*>(toSave);
-            writer.writeAttribute("hasZip",pP->getHasBelt()? "Yes": "No");
-        }
-        if (writer.hasError()){
-            throw std::exception();
-        }
-
-        ++it;
-    }
-
-    writer.writeEndElement();
-    writer.writeEndDocument();
-    isDataSaved=true;
-    file.commit();
+          file.commit(); // Scrive il file temporaneo su disco
+          isDataSaved=true;
 }
 
-void GestioneGiochi::push_end(Gioco * g)
+void GestioneGiochi::loadFromFile(string path)
 {
-    lista_giochi->push_back(g);
+    //The QDomDocument class represents an XML document.
+    QDomDocument xmlBOM;
+    // Load xml file as raw data
+    QFile f(QString::fromStdString(path));
+    if (!f.open(QIODevice::ReadOnly ))
+    {
+        // Error while loading file
+        std::cerr << "Error while loading file" << std::endl;
+
+    }
+
+    // Set data into the QDomDocument before processing
+    xmlBOM.setContent(&f);
+    f.close();
+
+    // Extract the root markup
+    QDomElement root=xmlBOM.documentElement(); // root tag
+
+    // Get the first child of the root (Markup COMPONENT is expected)
+    QDomElement Component=root.firstChild().toElement();
+
+    // Loop while there is a child
+    while(!Component.isNull())
+    {
+
+        // Check if the child tag name is Gioco
+        if (Component.tagName()=="Gioco")
+        {
+     Gioco* toPush;
+            // Read and display the component ID
+            QString platform=Component.attribute("tipo","no name");
+
+            // Get the first child of the component
+            QDomElement Child=Component.firstChild().toElement();
+
+            QString name;
+            QString year;
+            QString game_type;
+            QString pegi;
+            QString developer;
+            QString multiplayer;
+            QString s4k;;
+            QString online;
+            QString description;
+
+            // Read each child of the component node
+            while (!Child.isNull())
+            {
+                // Read Name and value
+                if (Child.tagName()=="nome")
+                {name=Child.firstChild().toText().data();
+
+                }
+                if (Child.tagName()=="anno") year=Child.firstChild().toText().data();
+                if (Child.tagName()=="genere") game_type=Child.firstChild().toText().data();
+                if (Child.tagName()=="pegi") pegi=Child.firstChild().toText().data();
+                if (Child.tagName()=="sviluppatore") developer=Child.firstChild().toText().data();
+                if (Child.tagName()=="multiplayer") multiplayer=Child.firstChild().toText().data();
+                if (Child.tagName()=="s4k") s4k=Child.firstChild().toText().data();
+                if (Child.tagName()=="online") online=Child.firstChild().toText().data();
+                if (Child.tagName()=="descrizione") description=Child.firstChild().toText().data();
+
+                // Next child
+                Child = Child.nextSibling().toElement();
+            }
+            if(platform == "Ps3") {
+
+                toPush = new Ps3(name.toStdString(),year.toStdString(),game_type.toStdString(),pegi.toStdString(),developer.toStdString(),(multiplayer.toStdString()=="si")?true:false,(s4k.toStdString()=="si")?true:false,(online.toStdString()=="si")?true:false,description.toStdString());
+      lista_giochi->push_back(toPush);
+
+            }
+           }
+        Component = Component.nextSiblingElement();
+
+    }
+    isDataSaved=true;
+}
+
+
+
+Gioco *GestioneGiochi::elementAt(unsigned int index)
+{
+    qDebug() << "sono in elementAT";
     isDataSaved=false;
+    return lista_giochi->at(index);
+}
+
+string GestioneGiochi::getPath() const
+{
+    return path;
 }
 
 bool GestioneGiochi::getIsDataSaved() const
@@ -99,24 +199,57 @@ void GestioneGiochi::setDataSaved(bool data)
     isDataSaved=data;
 }
 
+void GestioneGiochi::clear()
+{
+    isDataSaved=false;
+    qDebug() << "sono in clear";
+    if(!lista_giochi->isEmpty()){
+    for(auto it = lista_giochi->begin(); it!=end(); ++it){
+        lista_giochi->pop_back();
+    }
+    }
+
+}
+
+void GestioneGiochi::printAll() const
+{
+    qDebug() << "sono in printAll di Gestione Giochi";
+lista_giochi->PrintAll();
+}
+
+unsigned int GestioneGiochi::getDataSize() const
+{
+return lista_giochi->getSize();
+}
+
+DLinkedList<Gioco *> *GestioneGiochi::GetLista_giochi() const
+{
+    return lista_giochi;
+}
+
+
   DLinkedList<Gioco*>::list_iterator GestioneGiochi::begin()
 {
     isDataSaved=false;
-    return  lista_giochi->cbegin();
+    return  lista_giochi->begin();
   }
 
   DLinkedList<Gioco*>::list_iterator GestioneGiochi::end()
   {
       isDataSaved=false;
-      return lista_giochi->cend();
+      return lista_giochi->end();
   }
 
-DLinkedList<Gioco*>::const_list_iterator GestioneGiochi::cbegin() const
+  void GestioneGiochi::setNewPath(string str)
   {
-    return lista_giochi->cbegin();
-}
+      path= str;
+      qDebug() << "prima di destroy in setNewPAth";
 
-DLinkedList<Gioco*>::const_list_iterator GestioneGiochi::cend() const
-{
-        return lista_giochi->cend();
-}
+  }
+
+  void GestioneGiochi::erase(Gioco *it)
+  {
+      isDataSaved=false;
+       lista_giochi->erase(it);
+  }
+

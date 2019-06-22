@@ -70,7 +70,6 @@ QAction *MenuBar::getAbout() const{
     return about;
 }
 
-
 QAction *MenuBar::getExit() const{
     return exit;
 }

@@ -1,14 +1,14 @@
 #include "gioco.h"
 using namespace std;
-Gioco::Gioco(string pNome, int pAnnoRilascio, string pGenere, string  pClassificazionePegi, string pSviluppatore, bool pMultiplayer, bool s4k, bool pOnline, double pPrezzo, string pDescrizione)
+Gioco::Gioco(string pNome, string pAnnoRilascio, string pGenere, string  pClassificazionePegi, string pSviluppatore, bool pMultiplayer, bool s4k, bool pOnline, string pDescrizione)
     :nome(pNome),
       annoRilascio(pAnnoRilascio),
+      genere(pGenere),
       classificazionePegi(pClassificazionePegi),
       sviluppatore(pSviluppatore),
       multiplayer(pMultiplayer),
       supporto_4k(s4k),
       online(pOnline),
-      prezzo(pPrezzo),
       descrizione(pDescrizione){}
 
 Gioco::Gioco(const Gioco &g):
@@ -20,35 +20,30 @@ Gioco::Gioco(const Gioco &g):
     multiplayer(g.getMultiplayer()),
     supporto_4k(g.get4k()),
     online(g.getOnline()),
-    prezzo(g.PrezzoConsigliato()),
     descrizione(g.getDescrizione())
 {}
 
 bool Gioco::operator==(const Gioco& g) const {
     return nome == g.nome &&
         annoRilascio == g.annoRilascio &&
-        meseRilascio == g.meseRilascio &&
         genere == g.genere &&
         classificazionePegi == g.classificazionePegi &&
         sviluppatore == g.sviluppatore &&
         multiplayer == g.multiplayer &&
         supporto_4k == g.supporto_4k &&
-        online == g.online &&
-        prezzo == g.prezzo;
+        online == g.online;
 }
 
 bool Gioco::operator!=(const Gioco & g) const
 {
     return nome != g.nome ||
         annoRilascio != g.annoRilascio ||
-        meseRilascio != g.meseRilascio ||
         genere != g.genere ||
         classificazionePegi != g.classificazionePegi ||
         sviluppatore != g.sviluppatore ||
         multiplayer != g.multiplayer ||
         supporto_4k != g.supporto_4k ||
-        online != g.online ||
-        prezzo != g.prezzo;
+        online != g.online;
 }
 
 std::string Gioco::getNome() const
@@ -56,7 +51,7 @@ std::string Gioco::getNome() const
     return nome;
 }
 
-int Gioco::getAnnoRilascio() const
+string Gioco::getAnnoRilascio() const
 {
     return annoRilascio;
 }
@@ -91,11 +86,6 @@ bool  Gioco::getOnline() const
     return online;
 }
 
-double  Gioco::getPrezzo() const
-{
-    return prezzo;
-}
-
 string  Gioco::getDescrizione() const
 {
     return descrizione;
@@ -116,7 +106,7 @@ void Gioco::setGenere(char pGenere)
     genere = pGenere;
 }
 
-void Gioco::setClassificazionePegi(int pClassificazionePegi)
+void Gioco::setClassificazionePegi(string pClassificazionePegi)
 {
     classificazionePegi = pClassificazionePegi;
 }
@@ -144,19 +134,23 @@ void Gioco::setOnline(const bool pOnline)
 std::string Gioco::getInfo() const
 {
     stringstream stream;
-    stream << fixed << setprecision(2) <<getPrezzo();
-    string str= getTipo()+":";
-    return str.append("\nNome: " +getNome())
-            .append("\nAnno di rilascio: "+ std::to_string(getAnnoRilascio()))
-            .append("\nSviluppatore: " + getSviluppatore())
-            .append("\nMultiplayer: " + getMultiplayer()? "Si":"No")
-            .append("\nOnline: " + getOnline()?"Si":"No")
-            .append("\n4k:  "+ get4k())
-            .append("\nPegi:" + getClassificazionePegi())
-            .append("\nGenere" + getGenere());
+    string print_multiplayer =  std::string(getMultiplayer() ? "Si" : "No");
+    string print_online =  std::string(getOnline() ? "Si" : "No");
+    string print_s4k =  std::string(get4k() ? "Si" : "No");
+    string str= "";
+    return str.append("\nNome:  " +getNome())
+            .append("\nAnno di rilascio:  "+ getAnnoRilascio())
+            .append("\nSviluppatore:  " + getSviluppatore())
+            .append("\nMultiplayer:  " +  print_multiplayer)
+            .append("\nOnline: " + print_online)
+            .append("\n4k: "+  print_s4k)
+            .append("\nPegi: " + getClassificazionePegi())
+            .append("\nGenere: " + getGenere())
+             .append("\nDescrizione: " + getDescrizione());
 }
 
 std::ostream &operator<<(std::ostream & os, const Gioco & g)
 {
-    return os << g.getNome();
+    return os << "Nome: " << g.getNome() << "\nAnno rilascio: " << g.getAnnoRilascio() << "\n Genere; " << g.getGenere() << "\n Classificazione pegi: " << g.getClassificazionePegi()
+                << "\n Sviluppatore: " << g.getSviluppatore() << "\n Multiplayer: " << g.getMultiplayer() << "\n Supporto 4k: " << g.get4k() << "\n Online: " << g.getOnline() << "\n Descrizione: " << g.getDescrizione();
 }

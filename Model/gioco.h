@@ -11,31 +11,28 @@ class Gioco
 {
 private:
      string nome;
-     int annoRilascio;
-     int meseRilascio;
+     string annoRilascio;
      string genere;
      string classificazionePegi;
      string sviluppatore;
      bool multiplayer;
      bool supporto_4k;
      bool online;
-     double prezzo;
      string descrizione;
 
 public:
-    Gioco(string="", int = 2019, string ="FPS", string ="18", string ="EaSports", bool =true, bool =false, bool =true, double =0.0, string="vuoto");//costruttore a 5 parametri con valori di default
+    Gioco(string="", string = "2019", string ="FPS", string ="18", string ="EaSports", bool =true, bool =false, bool =true, string="vuoto");//costruttore a 5 parametri con valori di default
     Gioco(const Gioco&); // costruttore di copia
 
     //getter
     string getNome() const;
-    int getAnnoRilascio()const;
+    string getAnnoRilascio()const;
     string getGenere()const;
     string getClassificazionePegi()const;
     string getSviluppatore()const;
     bool getMultiplayer()const;
     bool get4k()const;
     bool getOnline()const;
-    double getPrezzo()const;
     string getDescrizione()const;
 
 
@@ -44,17 +41,16 @@ public:
  parametro di una certa funzione. Utile per distinguere i campi dati di una classe con i parametri di una funzione*/
     void setAnnoRilascio(int pAnnoRilascio);
     void setGenere(char pGenere);
-    void setClassificazionePegi(int pClassificazionePegi);
+    void setClassificazionePegi(string  pClassificazionePegi);
      void setDescrizione(const string &value);
      void setMultiplayer(const bool pMultiplayer);
      void set4k(const bool p4k);
      void setOnline(const bool pOnline);
 
     /*metodo virtuale puro*/
-    virtual double PrezzoConsigliato()const =0; // mi calcola il prezzo consigliato in base alla data d'uscita, in base alla piattaforma e in base al genere. Il prezzo rispecchia opprossimamente il prezzo dei gioco al giorno d'oggi.
-   // virtual Gioco* Clone() const=0;
     virtual string getTipo()const =0;
-   virtual string getInfo()const;
+
+      string getInfo()const;
 
     //distruttore virtuale
     virtual ~Gioco()=default; //c++11

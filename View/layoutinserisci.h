@@ -14,6 +14,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QGridLayout>
+#include <QTextEdit>
 #include"comboboxgenere.h"
 #include"comboboxanno.h"
 #include"comboboxpegi.h"
@@ -37,6 +38,7 @@ private:
     QPushButton * btn_nuovo_gioco_azzerra;
     QPushButton * btn_nuovo_gioco_annulla;
   ComboBoxTipo * combo_nuovo_gioco_tipo;
+  QTextEdit *textEditDescrizione;
     QGroupBox * FeaturesGroup();
 
 private slots:
@@ -54,6 +56,7 @@ public:
     QCheckBox * get4k()const;
     ComboBoxPegi* getPegi()const;
     ComboBoxGenere* getGenere()const;
+    QTextEdit * getDescrizione()const;
     QPushButton* getBtnConferma()const;
     QPushButton* getBtnAzzerra()const;
     QPushButton* getBtnAnnulla()const;

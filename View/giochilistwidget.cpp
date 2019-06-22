@@ -3,6 +3,7 @@
 GiochiListWidget::GiochiListWidget(QWidget *p): parent(p)
 {
      addScrollBarWidget(new QScrollBar(Qt::Orientation::Vertical,parent), Qt::AlignRight);
+     setAlternatingRowColors(true);
 }
 
 void GiochiListWidget::addGioco(Gioco *g)
@@ -29,6 +30,8 @@ GiochiListItem* GiochiListWidget::takeItem(Gioco * daTogliere){
         return daRest;
     }
 }
+
+
 
 GiochiListItem* GiochiListWidget::currentItem() const{
     return static_cast<GiochiListItem*>(QListWidget::currentItem());

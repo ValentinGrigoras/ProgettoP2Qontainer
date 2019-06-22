@@ -22,15 +22,16 @@ LayoutInserisci::LayoutInserisci(QWidget* p):
     qline_nuovo_gioco_nome(new QLineEdit(this)),
     combo_nuovo_gioco_anno(new ComboBoxAnno(this)),
     combo_nuovo_gioco_genere(new ComboBoxGenere(this)),
-  qline_nuovo_gioco_sviluppatore(new QLineEdit(this)),
+combo_nuovo_gioco_pegi(new ComboBoxPegi(this)),
+    qline_nuovo_gioco_sviluppatore(new QLineEdit(this)),
   check_nuovo_gioco_multiplayer(new QCheckBox("Multiplayer", this)),
   check_nuovo_gioco_4k(new QCheckBox("4k", this)),
-  check_nuovo_gioco_online(new QCheckBox("Online",this)),
-btn_nuovo_gioco_conferma(new QPushButton("Conferma",this)),
-  btn_nuovo_gioco_azzerra(new QPushButton("Azzerra",this)),
-  btn_nuovo_gioco_annulla(new QPushButton("Annulla",this)),
-combo_nuovo_gioco_pegi(new ComboBoxPegi(this)),
-  combo_nuovo_gioco_tipo(new ComboBoxTipo(this))
+    check_nuovo_gioco_online(new QCheckBox("Online",this)),
+  btn_nuovo_gioco_conferma(new QPushButton("Aggiungi al contenitore",this)),
+    btn_nuovo_gioco_azzerra(new QPushButton("Azzerra",this)),
+    btn_nuovo_gioco_annulla(new QPushButton("Annulla",this)),
+      combo_nuovo_gioco_tipo(new ComboBoxTipo(this)),
+   textEditDescrizione(new QTextEdit(this))
 {
 
     QVBoxLayout *main_layout = new QVBoxLayout(this);
@@ -83,6 +84,12 @@ combo_nuovo_gioco_pegi(new ComboBoxPegi(this)),
       combo_nuovo_gioco_genere->setStyleSheet("QComboBox{font-size : 10pt; font-weight: bold; color:#00264d;}");
    main_layout->addWidget(combo_nuovo_gioco_genere);
 
+QLabel* labe_descrizione = new QLabel(tr("Inserisci una descrizione del gioco"));
+   labe_descrizione->setStyleSheet("QLabel{font-size : 10pt; font-weight: bold; color:#00264d;}");
+      main_layout->addWidget(labe_descrizione);
+      textEditDescrizione->setPlaceholderText("Inserisci una descrizione del gioco");
+         textEditDescrizione->setStyleSheet("QEditText{font-size : 10pt; font-weight: bold; color:#00264d;}");
+         main_layout->addWidget(textEditDescrizione);
 
 btn_nuovo_gioco_conferma->setStyleSheet("QPushButton:pressed {background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:1 rgb(0,64,128))} QPushButton{background-color:#00264d; color:#e6e6e6; border: 1px solid black; border-radius: 5px; padding: 8px; font-size:9pt; font-weight:bold; margin-top:10px}");
     main_layout->addWidget(btn_nuovo_gioco_conferma);
@@ -93,7 +100,7 @@ btn_nuovo_gioco_conferma->setStyleSheet("QPushButton:pressed {background-color: 
     btn_nuovo_gioco_annulla->setStyleSheet("QPushButton:pressed {background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:1 rgb(0,64,128))} QPushButton{background-color:#00264d; color:#e6e6e6; border: 1px solid black; border-radius: 5px; padding: 8px; font-size:9pt; font-weight:bold; margin-top:10px}");
     main_layout->addWidget(btn_nuovo_gioco_annulla);
 
-
+setFixedSize(400,700);
 }
 
 ComboBoxTipo *LayoutInserisci::getTipo() const
@@ -139,6 +146,11 @@ ComboBoxPegi *LayoutInserisci::getPegi() const
 ComboBoxGenere *LayoutInserisci::getGenere() const
 {
     return combo_nuovo_gioco_genere;
+}
+
+QTextEdit *LayoutInserisci::getDescrizione() const
+{
+    return textEditDescrizione;
 }
 
 QPushButton *LayoutInserisci::getBtnConferma() const

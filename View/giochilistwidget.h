@@ -18,6 +18,7 @@ public:
     GiochiListItem* currentItem()const;
     GiochiListItem* takeItem(Gioco*);
 
+
 signals:
     void   signalEliminaElementoDaList(Gioco*);
 };

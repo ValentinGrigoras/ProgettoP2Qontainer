@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--File di salvataggio dell'applicazione. Non modificare a mano.-->
+<root>
+    <Gioco tipo="Ps3">
+        <nome>Gioco1</nome>
+        <anno>2019</anno>
+        <genere></genere>
+        <pegi></pegi>
+        <sviluppatore></sviluppatore>
+        <multiplayer>no</multiplayer>
+        <s4k>no</s4k>
+        <online>no</online>
+        <descrizione>asdasda</descrizione>
+    </Gioco>
+    <Gioco tipo="Ps3">
+        <nome>Gioco2</nome>
+        <anno>2019</anno>
+        <genere></genere>
+        <pegi></pegi>
+        <sviluppatore></sviluppatore>
+        <multiplayer>no</multiplayer>
+        <s4k>no</s4k>
+        <online>no</online>
+        <descrizione>dadada</descrizione>
+    </Gioco>
+    <Gioco tipo="Ps3">
+        <nome>Gioco3</nome>
+        <anno>2019</anno>
+        <genere></genere>
+        <pegi></pegi>
+        <sviluppatore></sviluppatore>
+        <multiplayer>no</multiplayer>
+        <s4k>no</s4k>
+        <online>no</online>
+        <descrizione>adadad</descrizione>
+    </Gioco>
+    <Gioco tipo="Ps3">
+        <nome>Gioco4</nome>
+        <anno>2019</anno>
+        <genere></genere>
+        <pegi></pegi>
+        <sviluppatore></sviluppatore>
+        <multiplayer>no</multiplayer>
+        <s4k>no</s4k>
+        <online>no</online>
+        <descrizione>adasda</descrizione>
+    </Gioco>
+    <Gioco tipo="Ps3">
+        <nome>NuovoGioco</nome>
+        <anno>2005</anno>
+        <genere>Arcade</genere>
+        <pegi>Pegi 3</pegi>
+        <sviluppatore>Valentin</sviluppatore>
+        <multiplayer>yes</multiplayer>
+        <s4k>no</s4k>
+        <online>yes</online>
+        <descrizione>djakldjklajdklajdklajlkajkla</descrizione>
+    </Gioco>
+</root>

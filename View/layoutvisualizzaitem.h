@@ -26,6 +26,7 @@ public:
     LayoutVisualizzaItem(GiochiListItem*, QWidget* =nullptr);
 public slots:
     void  slotSalvaModifica()const;
+
 };
 
 #endif // LAYOUTVISUALIZZAITEM_H

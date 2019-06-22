@@ -12,6 +12,7 @@ public:
     GiochiListItem(Gioco*, QWidget* =nullptr);
     Gioco* getItemAddress() const;
     void update();
+   bool isEmpty()const;
 };
 
 #endif // GIOCHILISTITEM_H

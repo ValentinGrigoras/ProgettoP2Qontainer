@@ -17,10 +17,8 @@ class MenuBar : public QMenuBar
         QAction* exit;
 
         QMenu* tools;
-        QAction* calcolaPrezzo;
         QAction* reportBug;
         QAction* about;
-        QAction* visualizza;
         QAction* ricerca;
         QAction* inserisci;
 public:
