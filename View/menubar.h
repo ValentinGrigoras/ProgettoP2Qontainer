@@ -16,9 +16,7 @@ class MenuBar : public QMenuBar
         QAction* load ;
         QAction* exit;
 
-        QMenu* tools;
         QAction* reportBug;
-        QAction* about;
         QAction* ricerca;
         QAction* inserisci;
 public:
@@ -27,11 +25,11 @@ public:
     QMenu *getHelp() const;
     QAction *getSave() const;
     QAction *getLoad() const;
-    QMenu *getTools() const;
     QAction *getCalcolaPrezzo() const;
     QAction *getReportBug() const;
     QAction *getAbout() const;
     QAction *getExit() const;
+    QAction *getRicerca()const;
 };
 
 #endif // MENUBAR_H

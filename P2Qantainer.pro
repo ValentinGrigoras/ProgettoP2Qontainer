@@ -48,7 +48,8 @@ SOURCES += \
     View/comboboxanno.cpp \
     View/comboboxpegi.cpp \
     View/comboboxtipo.cpp \
-    Exceptions/openfileexception.cpp
+    Exceptions/openfileexception.cpp \
+    View/layoutricerca.cpp
 
 HEADERS += \
      Model/gioco.h \
@@ -72,7 +73,8 @@ HEADERS += \
     View/comboboxanno.h \
     View/comboboxpegi.h \
     View/comboboxtipo.h \
-    Exceptions/openfileexception.h
+    Exceptions/openfileexception.h \
+    View/layoutricerca.h
 
 
 # Default rules for deployment.

@@ -20,8 +20,8 @@ private:
     QPushButton* btnClose;
     QPushButton* salvaModifica;
     Gioco* g;
-    QLabel *immagine;
     QTextEdit* descrizione;
+    QTextEdit * sviluppatore;
 public:
     LayoutVisualizzaItem(GiochiListItem*, QWidget* =nullptr);
 public slots:

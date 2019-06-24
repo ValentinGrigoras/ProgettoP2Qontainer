@@ -4,6 +4,7 @@ GiochiListWidget::GiochiListWidget(QWidget *p): parent(p)
 {
      addScrollBarWidget(new QScrollBar(Qt::Orientation::Vertical,parent), Qt::AlignRight);
      setAlternatingRowColors(true);
+     setStyleSheet("QListWidget{ color:#00264d;font-weight:bold;}");
 }
 
 void GiochiListWidget::addGioco(Gioco *g)

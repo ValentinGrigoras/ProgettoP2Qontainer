@@ -5,8 +5,9 @@
 #include "View/menubar.h"
 #include "View/layoutinserisci.h"
 #include"View/layoutvisualizzagiochi.h"
-class InsertView;
-class MainView;
+#include"View/layoutricerca.h"
+//class InsertView;
+//class MainView;
 
 class Controller : public QWidget
 {
@@ -15,6 +16,7 @@ private:
 MenuBar* menuBar;
 GestioneGiochi * modello;
 LayoutInserisci* inserisciLayout;
+LayoutRicerca* ricercaLayout;
 QHBoxLayout* mainLayout;
 LayoutVisualizzaGiochi *visualizzaLayout;
 LayoutVisualizzaItem* dialog;
@@ -25,17 +27,23 @@ signals:
 
 public slots:
  void slotShowInserisci()const;
- void slotShowVisualizza()const;
+// void slotShowVisualizza()const;
+ void slotShowRicerca()const;
+
+// void resetSearchList();
+
 void slotAggiungiElemento();
   void slotDataChanged(bool)const;
       void slotSaveData()const;
-        void slotShowAboutDialog();
         void slotShowReportBug();
         void slotLoad();
          void slotShowModifica();
+         void slotRicerca();
+        void slotResetRicerca()const;
+
          void slotEliminaElemento()const;
-         void slotEliminaDaModello(Gioco*)const;
-        //void slotEliminaDaModello()const;
+         //void slotEliminaDaModello(Gioco*)const;
+        void slotEliminaDaModello()const;
 };
 
 #endif // CONTROLLER_H

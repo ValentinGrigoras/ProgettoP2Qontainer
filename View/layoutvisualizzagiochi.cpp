@@ -29,7 +29,10 @@ label_lista->setStyleSheet("QLabel{font-size : 10pt; font-weight: bold; color:#0
     connect(list, SIGNAL(currentRowChanged(int)), this, SLOT(slotElementoSelezionato()));
 
     connect(this, SIGNAL(signalElementoSelezionato(bool)), this,SLOT(slotElementoSelezionato(bool)));
-setFixedSize(400,700);
+
+    setFixedWidth(400);
+    setFixedHeight(700);
+    list->update();
 }
 
 QPushButton *LayoutVisualizzaGiochi::getBtnElimina() const

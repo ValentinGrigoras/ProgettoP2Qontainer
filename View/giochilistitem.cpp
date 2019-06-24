@@ -6,6 +6,7 @@ GiochiListItem::GiochiListItem(Gioco* i, QWidget* p):
 {
     update();
 
+
 }
 
 void GiochiListItem::update(){

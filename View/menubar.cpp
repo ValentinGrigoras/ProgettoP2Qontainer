@@ -7,9 +7,7 @@ MenuBar::MenuBar(QWidget* p):
     save( new QAction("Salva su file", menu)),
     load( new QAction("Carica da file", menu)),
     exit(new QAction("Esci", menu)),
-    tools(new QMenu("Strumenti",this)),
     reportBug(new QAction("Report Bug",help)),
-    about(new QAction("About",help)),
     ricerca( new QAction("Ricerca",p)),
     inserisci(new QAction("Inserisci",p))
 {
@@ -24,9 +22,7 @@ MenuBar::MenuBar(QWidget* p):
     addMenu(menu);
     addAction(inserisci);
     addAction(ricerca);
-    addMenu(tools);
     actionList.push_back(reportBug);
-    actionList.push_back(about);
 
     help->addActions(actionList);
 
@@ -35,10 +31,9 @@ MenuBar::MenuBar(QWidget* p):
 
     connect(exit,SIGNAL(triggered()),parent,SLOT(close()));
     connect(save,SIGNAL(triggered()),parent,SLOT(slotSaveData()));
-    connect(about,SIGNAL(triggered()), parent,SLOT(slotShowAboutDialog()));
     connect(reportBug, SIGNAL(triggered()), parent, SLOT(slotShowReportBug()));
     connect(load,SIGNAL(triggered()),parent, SLOT(slotLoad()));
-   // connect(ricerca, SIGNAL(triggered()), parent,SLOT(slotShowRicerca()));
+   connect(ricerca, SIGNAL(triggered()), parent,SLOT(slotShowRicerca()));
     connect(inserisci, SIGNAL(triggered()), parent,SLOT(slotShowInserisci()));
 
 }
@@ -58,20 +53,17 @@ QAction *MenuBar::getLoad() const{
     return load;
 }
 
-QMenu *MenuBar::getTools() const{
-    return tools;
-}
 
 QAction *MenuBar::getReportBug() const{
     return reportBug;
 }
 
-QAction *MenuBar::getAbout() const{
-    return about;
-}
-
-
 QAction *MenuBar::getExit() const{
     return exit;
+}
+
+QAction *MenuBar::getRicerca() const
+{
+    return ricerca;
 }
 

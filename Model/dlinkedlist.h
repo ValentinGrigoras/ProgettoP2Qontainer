@@ -152,7 +152,7 @@ const T* DLinkedList<T>::const_list_iterator::operator->() const{
 template<class T>
 typename DLinkedList<T>::list_iterator& DLinkedList<T>::list_iterator::operator++(){
 
-    qDebug() <<"sono in operator++ di dlinked";
+
     if(past_the_end) throw PastTheEnd();
 
         if(!p) throw InvalidIterator();
@@ -164,7 +164,7 @@ typename DLinkedList<T>::list_iterator& DLinkedList<T>::list_iterator::operator+
 //OPERATORE POST INCREMENTO
 template<class T>
 typename DLinkedList<T>::list_iterator DLinkedList<T>::list_iterator::operator++(int){
-qDebug() <<"sono in operator++ post di dlinked";
+
    if(past_the_end) throw PastTheEnd();
 
        if(!p) throw InvalidIterator();
@@ -181,29 +181,27 @@ qDebug() <<"sono in operator++ post di dlinked";
 //OPERATORE PRE DECREMENTO
 template<class T>
 typename DLinkedList<T>::list_iterator& DLinkedList<T>::list_iterator::operator--(){
-    qDebug() <<"sono in operator-- di dlinked";
-    if(past_the_end)
+    if (past_the_end){p=p-1; past_the_end=false;}
+    else
     {
-        p = p-1;
-        past_the_end = false;
+        if (p &&p->prev)
+            p=p->prev;
     }
-    else { (p && !p->prev)? throw InvalidIterator():p=p->prev;}
-return *this;
+    return *this;
 }
 
 //OPERATORE POST DECREMENTO
 template<class T>
 typename DLinkedList<T>::list_iterator DLinkedList<T>::list_iterator::operator--(int){
-    qDebug() <<"sono in operator-- post  di dlinked";
-list_iterator aux(*this);
-if(past_the_end)
-{
-    p = p-1;
-    past_the_end = false;
-}
-else { (p && !p->prev)? throw InvalidIterator():p=p->prev;}
-return aux;
+    list_iterator aux=*this;
 
+     if (past_the_end) {p=p-1; past_the_end=false;}
+     else
+     {
+         if (p && p->prev)
+             p=p->prev;
+     }
+     return aux;
 }
 
 //OPERATORE DI CONVERSIONE DA LIST_ITERATOR A CONST_LIST_ITERATOR
@@ -238,13 +236,13 @@ typename DLinkedList<T>::const_list_iterator DLinkedList<T>::cend()const{
 //OPERATORE PRE INCREMENTO
 template<class T>
 typename DLinkedList<T>::const_list_iterator& DLinkedList<T>::const_list_iterator::operator++(){
-    qDebug() <<"sono in operator++ pre di dlinked";
+
 
     if(past_the_end) throw PastTheEnd();
 
         if(!cp)
         {
-            qDebug() << "sono in pre";
+
             throw InvalidIterator();
 }
             if(cp->next) cp=cp->next; else{ cp=cp+1; past_the_end=true;}
@@ -259,7 +257,7 @@ typename DLinkedList<T>::const_list_iterator& DLinkedList<T>::const_list_iterato
 //OPERATORE POST INCREMENTO
 template<class T>
 typename DLinkedList<T>::const_list_iterator DLinkedList<T>::const_list_iterator::operator++(int){
-qDebug() <<"sono in operator++ post di dlinked";
+
    if(past_the_end) throw PastTheEnd();
 
        if(!cp) throw InvalidIterator();
@@ -274,37 +272,34 @@ qDebug() <<"sono in operator++ post di dlinked";
      return aux;
 }
 //OPERATORE PRE DECREMENTO
-template<class T>
+template <class T>
 typename DLinkedList<T>::const_list_iterator& DLinkedList<T>::const_list_iterator::operator--(){
-
-    qDebug() <<"sono in operator-- pre  di dlinked";
-    if(past_the_end)
+    if (past_the_end){cp=cp-1; past_the_end=false;}
+    else
     {
-        cp = cp-1;
-        past_the_end = false;
+        if (cp &&cp->prev)
+            cp=cp->prev;
     }
-    else { (cp && !cp->prev)? throw InvalidIterator():cp=cp->prev;}
-return *this;
+    return *this;
 }
 
 //OPERATORE POST DECREMENTO
 template<class T>
 typename DLinkedList<T>::const_list_iterator DLinkedList<T>::const_list_iterator::operator--(int){
-    qDebug() <<"sono in operator --  di dlinked";
-    list_iterator aux(*this);
-    if(past_the_end)
-    {
-        cp = cp-1;
-        past_the_end = false;
-    }
-    else { (cp && !cp->prev)? throw InvalidIterator():cp=cp->prev;}
-    return aux;
+    const_list_iterator aux=*this;
 
+       if (past_the_end) {cp=cp-1; past_the_end=false;}
+       else
+       {
+           if (cp && cp->prev)
+               cp=cp->prev;
+       }
+       return aux;
 }
 //PUSH BACK DI DLINKED LIST
 template <class T>
 void DLinkedList<T>::push_back(const T& t){
-    qDebug() <<"sono in pushback di dlinked";
+
     last=new Nodo(t,last,nullptr);
     first==nullptr ? first=last : (last->prev)->next=last;
 }
@@ -332,7 +327,7 @@ if(first){
 //POP FRONT DI DLINKED LIST
 template <class T>
 void DLinkedList<T>::pop_front(){
-    qDebug() << "sono dentro pop front di dlist";
+if(first){
     if (first==last){
         delete first;
         first=last=nullptr;
@@ -342,11 +337,12 @@ void DLinkedList<T>::pop_front(){
         first->prev=nullptr;
       }
 }
+}
 
 //METODO D'APPOGGIO DI DLINKED LIST
 template <class T>
 bool DLinkedList<T>::isEmpty()const{
-    return first==last;
+    return first==nullptr;
 }
 
 //OPERATORE DI UGUAGLIANZA TRA 2 DLINKED LIST
@@ -372,39 +368,49 @@ bool DLinkedList<T>::operator!=(const DLinkedList<T>& l) const{
 //METODO ERASE DI DILINKED LIST (DA VERIFICARE)
 template <class T>
 typename DLinkedList<T>::list_iterator DLinkedList<T>::erase(typename DLinkedList<T>::list_iterator it){
-    qDebug() <<"sono in erase di dlinked";
-      if(it==nullptr)throw InvalidIterator();
-list_iterator aux;
-      if(*it == first)
-      {
-          if(!(*it->next)){
-          pop_front();
-          *it = first=last;
-          *it.past_the_end = false;
-          return it;
-          }
-          *aux = *it->next;
-          *aux->prev = nullptr;
-          delete it;
-          return aux;
-      }
-      else if(*it == last)
-      {
-          pop_back();
-          *it = last+1;
-          return nullptr;
-      }
-      else
-      {
-          *aux = *it->next;
-          *aux->prev = *it->prev;
-          delete it;
-      }
-return aux;
-}
+//    if(first == nullptr) throw "Lista vuota"; // caso lista vuota
+
+//     list_iterator salva(nullptr,false);
+//   if  (it.p->prev!=nullptr)
+//       salva=list_iterator(it.p->prev,false);
+//     else
+//               salva=list_iterator(last,false);
+
+//            if(first == last){ // caso lista con un elemento
+//                          first = nullptr;
+//                            last=nullptr;
+//             }else
+//                            if(it.p == first){ // caso in cui l'elemento da eliminare si trova in prima posizione
+//                                          first = it.p->next;
+//                                          first->prev = nullptr;
+//                            }else
+//                                            if(it.p == last){ // caso in cui ho almeno 2 nodi e l'elemento da eliminare si trova nell'ultima posizione
+//                                                         last = it.p->prev;
+//                                                         last->next=nullptr;
+//                                                  }else{
+//                                                                 it.p->prev->next = it.p->next;
+//                                                                  it.p->next ->prev = it.p->prev; }
+//      delete it.p;
+//      return salva++;
+    list_iterator daRitornare = it;
+    if (it.p == first)
+                first = first->next;
+            else if (it.p == last)
+                last = last->prev;
+
+    if (! it.p) throw InvalidIterator();
+
+    if ( it.p->prev)   it.p->prev->next =  it.p->next;
+
+    if ( it.p->next)
+                    it.p->next->prev = it.p->prev;
+
+                delete  it.p;
+    return daRitornare++;
+  }
 template <class T>
 typename DLinkedList<T>::list_iterator DLinkedList<T>::insert(typename DLinkedList<T>::list_iterator it, const T& ogg){
-qDebug() <<"sono in insert  di dlinked";
+
     if(it.p==first)
     {
         push_front(ogg);
@@ -440,10 +446,35 @@ bool DLinkedList<T>::const_list_iterator::operator!=(typename DLinkedList<T>::co
     return cp!=it.cp;
 }
 template <typename T>
-void DLinkedList<T>::erase(T oggetto){
-    qDebug() <<"sono in erase";
-    for(auto it= begin() ; (*it)!= oggetto && it!=end(); ++it){
-         if ((*it)== oggetto)return erase(oggetto);
+void DLinkedList<T>::erase(T  oggetto){
+    bool trovato= false;
+
+    if(first == nullptr) throw  Exceptions("Lista vuota"); // caso lista vuota
+
+    if(first == last){ // caso lista con un elemento
+        first = nullptr;
+        last=nullptr;
+        trovato = true;
+    }
+    for(auto it= begin() ; it!=end() && !trovato; ++it){//caso lista con almeno 2 elementi
+        if (it.p->info== oggetto){
+            if(it.p == first){ // caso in cui l'elemento da eliminare si trova in prima posizione
+                first = it.p->next;
+                first->prev = nullptr;
+            }
+            else if(it.p == last){ // caso in cui ho almeno 2 nodi e l'elemento da eliminare si trova nell'ultima posizione
+                last = it.p->prev;
+                last->next=nullptr;
+            }
+            else{
+                it.p->prev->next = it.p->next;
+                it.p->next ->prev = it.p->prev;
+
+            }
+trovato = true;
+delete it.p;
+        }
+
     }
 
 }
@@ -454,7 +485,6 @@ auto it = begin();
 unsigned int i = 0;
 while(it!= end() &&  i != index)
 {
-    qDebug() << "sono in at method";
     ++it;
     i++;
 }
@@ -462,17 +492,18 @@ while(it!= end() &&  i != index)
 }
 template <typename T>
 unsigned int DLinkedList<T>::getSize()const{
-    unsigned int dim = 0;
-for(auto it = cbegin(); it!=cend(); ++it){
-    qDebug() << "Sono dentro getSize di DList";
-    dim++;
-}
-return dim;
+        unsigned int dim = 0;
+
+    if(!isEmpty()){
+            for(auto it = cbegin(); it!=cend(); ++it){
+                dim++;
+            }
+        }
+     return dim;
 }
 template <typename T>
 void DLinkedList<T>::clear(){
   while(!isEmpty())
-      qDebug() << "Sono dentro clear di DList";
       pop_front();
     }
 
@@ -487,7 +518,7 @@ void DLinkedList<T>::Destroy(){
 
 template <typename T>
 DLinkedList<T>& DLinkedList<T>::operator=(const DLinkedList<T>& t){
-    qDebug() <<"sono in operator= di dlinked";
+
 if (this != &t)
 {
     clear();
@@ -498,13 +529,10 @@ if (this != &t)
 }
 template<typename T>
 void DLinkedList<T>::PrintAll(){
-    qDebug() <<"sono in PrintAll di container";
-    if(isEmpty())  qDebug() <<"La lista è vuota";
-    else{
     for(auto it = begin(); it!=end(); ++it){
         qDebug() << *it << endl;
     }
-    }
+
 }
 
 #endif // DLINKEDLIST_H

@@ -1,4 +1,5 @@
 #include "gioco.h"
+
 using namespace std;
 Gioco::Gioco(string pNome, string pAnnoRilascio, string pGenere, string  pClassificazionePegi, string pSviluppatore, bool pMultiplayer, bool s4k, bool pOnline, string pDescrizione)
     :nome(pNome),
@@ -138,7 +139,8 @@ std::string Gioco::getInfo() const
     string print_online =  std::string(getOnline() ? "Si" : "No");
     string print_s4k =  std::string(get4k() ? "Si" : "No");
     string str= "";
-    return str.append("\nNome:  " +getNome())
+    return str.append("\nTipo:  " +getTipo())
+             .append("\nNome:  " +getNome())
             .append("\nAnno di rilascio:  "+ getAnnoRilascio())
             .append("\nSviluppatore:  " + getSviluppatore())
             .append("\nMultiplayer:  " +  print_multiplayer)

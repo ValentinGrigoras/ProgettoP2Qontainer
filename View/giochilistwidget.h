@@ -11,6 +11,7 @@ class GiochiListWidget : public QListWidget
     QWidget* parent;
     QAction* onClickAction, *onRightClickAction;
 
+
 public:
     GiochiListWidget(QWidget* =nullptr);
     void addGioco(Gioco*);

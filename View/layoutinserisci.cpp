@@ -47,9 +47,9 @@ combo_nuovo_gioco_pegi(new ComboBoxPegi(this)),
     main_layout->addWidget(label_base);
 
     QLabel * label_tipo = new QLabel("Seleziona il tipo di gioco");
-    label_base->setAlignment(Qt::AlignLeft);
-    label_base->setStyleSheet("QLabel{font-size : 11pt; font-weight: bold; color:#00264d;}");
-    main_layout->addWidget(label_base);
+    label_tipo->setAlignment(Qt::AlignLeft);
+    label_tipo->setStyleSheet("QLabel{font-size : 11pt; font-weight: bold; color:#00264d;}");
+    main_layout->addWidget(label_tipo);
     combo_nuovo_gioco_tipo->setStyleSheet("QComboBox{font-size : 10pt; font-weight: bold; color:#00264d;}");
     main_layout->addWidget(combo_nuovo_gioco_tipo);
 
@@ -101,6 +101,8 @@ btn_nuovo_gioco_conferma->setStyleSheet("QPushButton:pressed {background-color: 
     main_layout->addWidget(btn_nuovo_gioco_annulla);
 
 setFixedSize(400,700);
+QRegExp rx ("[a-zA-Z]+[0-9]{0,4}");
+qline_nuovo_gioco_nome->setValidator (new QRegExpValidator(rx, this));
 }
 
 ComboBoxTipo *LayoutInserisci::getTipo() const

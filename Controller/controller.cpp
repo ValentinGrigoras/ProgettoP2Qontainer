@@ -13,46 +13,60 @@
 #include <iostream>
 #include <QFileDialog>
 #include <QBuffer>
+#include<QRegExpValidator>
+
 Controller::Controller(GestioneGiochi* m, QWidget *parent) :
     QWidget(parent),
     menuBar(new MenuBar(this)),
     modello(m),
     inserisciLayout(new LayoutInserisci(this)),
-mainLayout(new QHBoxLayout(this)),
-  visualizzaLayout( new LayoutVisualizzaGiochi(this)),
+    ricercaLayout(new LayoutRicerca(this)),
+    mainLayout(new QHBoxLayout(this)),
+    visualizzaLayout( new LayoutVisualizzaGiochi(this)),
+
 dialog(nullptr)
 {
-menuBar->setStyleSheet("QMenuBar{font-size : 10pt; font-weight: bold; background-color:#00264d; color:#fff} QMenuBar::item::selected{background-color:#0058b3};");
+    menuBar->setStyleSheet("QMenuBar{font-size : 10pt; font-weight: bold; background-color:#00264d; color:#fff} QMenuBar::item::selected{background-color:#0058b3};");
+
     mainLayout->setMenuBar(menuBar);
+    mainLayout->addWidget(ricercaLayout);
     mainLayout->addWidget(inserisciLayout);
     mainLayout->addWidget(visualizzaLayout);
-    slotShowInserisci();
 
 
+    //QRegExp name_exp ("/^[a-zA-Z]\\[a-zA-Z0-0]{,2,15}$/") ;
+    //QValidator *validator = new QRegExpValidator(name_exp, this);
     setLayout(mainLayout);
 
-connect(inserisciLayout->getBtnConferma(),SIGNAL(clicked()), this, SLOT(slotAggiungiElemento()));
-    connect(visualizzaLayout->getBtnElimina(),SIGNAL(clicked()),this,SLOT(slotEliminaElemento()));
-connect(menuBar->getSave(),SIGNAL(triggered()), this, SLOT(slotSaveData()));
- connect(visualizzaLayout->getBtnModifica(),SIGNAL(clicked()),this,SLOT(slotShowModifica()));
-slotLoad();
-}
+    slotShowInserisci();
 
-Controller::~Controller()
-{
-    //modello->saveToFile();
+    connect(visualizzaLayout->getBtnElimina(),SIGNAL(clicked()),this,SLOT(slotEliminaElemento()));
+    connect(visualizzaLayout->getBtnElimina(),SIGNAL(clicked()),this,SLOT(slotResetRicerca()));
+    connect(visualizzaLayout->getBtnElimina(),SIGNAL(clicked()),ricercaLayout,SLOT(slotResetRicerca()));
+    connect(inserisciLayout->getBtnConferma(),SIGNAL(clicked()), this, SLOT(slotAggiungiElemento()));
+
+    connect(menuBar->getSave(),SIGNAL(triggered()), this, SLOT(slotSaveData()));
+    connect(menuBar->getRicerca(),SIGNAL(triggered()),this,SLOT(slotShowRicerca()));
+
+    connect(visualizzaLayout->getBtnModifica(),SIGNAL(clicked()),this,SLOT(slotShowModifica()));
+
+    connect(ricercaLayout->getCerca(),SIGNAL(clicked()),this,SLOT(slotRicerca()));
+    connect(ricercaLayout->getReset(),SIGNAL(clicked()), ricercaLayout, SLOT(slotResetRicerca()));
+    connect(ricercaLayout->getReset(),SIGNAL(clicked()), this, SLOT(slotResetRicerca()));
+
+    setFixedSize(inserisciLayout->width()+visualizzaLayout->width()+100, inserisciLayout->height()+80);
+
+    QMessageBox msgBox;
+    msgBox.setText("Il contenitore parte inizialmente vuoto. Se si vuole aggiungere dei dati di default, andare su 'File -> Carica da file' e selezionare il file default.xml presente nella cartella root del progetto. Grazie! ");
+    msgBox.exec();
 }
+Controller::~Controller(){}
+
 void Controller::slotShowInserisci() const{
     inserisciLayout->show();
-     visualizzaLayout->show();
-
-}
-void Controller::slotShowVisualizza() const{
     visualizzaLayout->show();
-    inserisciLayout->show();
-
+    ricercaLayout->hide();
 }
-
 void Controller::slotAggiungiElemento()
 {
     int  indiceTipo = inserisciLayout->getTipo()->currentIndex();
@@ -62,15 +76,20 @@ void Controller::slotAggiungiElemento()
     string indicePegi = inserisciLayout->getPegi()->currentText().toStdString();
     string  indiceGenere = inserisciLayout->getGenere()->currentText().toStdString();
     string  descrizione = inserisciLayout->getDescrizione()->toPlainText().toStdString();
-Gioco* toPush=nullptr;
+    Gioco* toPush=nullptr;
     switch (indiceTipo) {
-    case 0:
-        toPush = new Ps3(push_nome,indiceAnno,indiceGenere,indicePegi,push_sviluppatore,inserisciLayout->getMultiplayer()->isChecked(), inserisciLayout->get4k()->isChecked(),inserisciLayout->getOnline()->isChecked(), descrizione);
-        break;
-    case 1:
-        //toPush = new Ps4(push_nome,indiceAnno,indiceGenere,indicePegi,push_sviluppatore,inserisciLayout->getMultiplayer()->isChecked(), inserisciLayout->get4k()->isChecked(),inserisciLayout->getOnline()->isChecked(), 50.0,"Descrizione");
-        break;
-
+        case 0:
+            toPush = new Ps3(push_nome,indiceAnno,indiceGenere,indicePegi,push_sviluppatore,inserisciLayout->getMultiplayer()->isChecked(), inserisciLayout->get4k()->isChecked(),inserisciLayout->getOnline()->isChecked(), descrizione);
+            break;
+        case 1:
+            toPush = new Ps4(push_nome,indiceAnno,indiceGenere,indicePegi,push_sviluppatore,inserisciLayout->getMultiplayer()->isChecked(), inserisciLayout->get4k()->isChecked(),inserisciLayout->getOnline()->isChecked(), descrizione);
+            break;
+        case 2:
+            toPush = new Xbox360(push_nome,indiceAnno,indiceGenere,indicePegi,push_sviluppatore,inserisciLayout->getMultiplayer()->isChecked(), inserisciLayout->get4k()->isChecked(),inserisciLayout->getOnline()->isChecked(), descrizione);
+            break;
+        case 3:
+            toPush = new XboxOne(push_nome,indiceAnno,indiceGenere,indicePegi,push_sviluppatore,inserisciLayout->getMultiplayer()->isChecked(), inserisciLayout->get4k()->isChecked(),inserisciLayout->getOnline()->isChecked(), descrizione);
+            break;
     }
     cout<<toPush;
     if(toPush!= nullptr){
@@ -86,36 +105,18 @@ Gioco* toPush=nullptr;
 
 void Controller::slotDataChanged(bool b) const
 {
-    menuBar->getSave()->setEnabled(b);
+        menuBar->getSave()->setEnabled(b);
 }
 
 void Controller::slotSaveData() const
 {
-     qDebug() <<"Pre Salvaa" << QString::fromStdString(modello->getPath());
-
-     if(!modello->getIsDataSaved()){
          modello->saveToFile();
          slotDataChanged(false);
-     }
-
-        qDebug() <<"Dopo Salvaa" << QString::fromStdString(modello->getPath());
-
-
-}
-
-void Controller::slotShowAboutDialog()
-{
-    GiochiListItem *  a= visualizzaLayout->getList()->currentItem();
-
-    if(dialog!=nullptr) delete dialog;
-    dialog= new LayoutVisualizzaItem(a,this);
-    dialog->show();
-    slotDataChanged(true);
 }
 
 void Controller::slotShowReportBug()
 {
-    QMessageBox::about(this, "Report","Per segnalare un bug e' pregato di contattare email: valentin.grigoras@studenti.unipd.it, grazie!");
+        QMessageBox::about(this, "Report","Per segnalare un bug e' pregato di contattare email: valentin.grigoras@studenti.unipd.it, grazie!");
 }
 
 void Controller::slotLoad()
@@ -132,26 +133,25 @@ void Controller::slotLoad()
                 "P2Progetto/ProgettoP2Qontainer/Model",
                 "File XML(*.xml)"
                 );
-       if(file!=""){
-           visualizzaLayout->getList()->clear();
-           //ricercaLayout->slotResetRicerca();
-           modello->clear();
 
-           modello->setNewPath(file.toStdString());
-           qDebug() <<QString::fromStdString( modello->getPath());
-    modello->loadFromFile( file.toStdString());
-    if(modello->getDataSize()==0){
-     QMessageBox::warning(this,"Attenzione!","Il file del programma e' vuoto.");
-}
-  else{
-        qDebug() << modello->getDataSize();
-        for(unsigned int i=0; i<modello->getDataSize(); i++)
-           visualizzaLayout->getList()->addGioco(modello->elementAt(i));
-      modello->setDataSaved(true);
-        slotShowVisualizza();
-        slotDataChanged(false);
-    }
-}
+               if(file!=""){
+                   visualizzaLayout->getList()->clear();
+
+                   modello->clear();
+
+                   modello->setNewPath(file.toStdString());
+                   modello->loadFromFile( file.toStdString());
+                    if(modello->getDataSize()==0){
+                    QMessageBox::warning(this,"Attenzione!","Il file del programma e' vuoto.");
+            }
+          else{
+                            for(unsigned int i=0; i<modello->getDataSize(); i++)
+                                     visualizzaLayout->getList()->addGioco(modello->elementAt(i));
+
+              modello->setDataSaved(true);
+               slotDataChanged(false);
+                      }
+        }
 }
 
 void Controller::slotShowModifica()
@@ -164,50 +164,71 @@ void Controller::slotShowModifica()
     slotDataChanged(true);
 }
 
-void Controller::slotEliminaElemento() const
+void Controller::slotRicerca()
 {
-    if(visualizzaLayout->getList()->count() && visualizzaLayout->getList()->currentItem()!= nullptr){
-        GiochiListItem* item = visualizzaLayout->getList()->takeItem(visualizzaLayout->getList()->currentRow());
 
-        modello->erase(item->getItemAddress());
-        delete item;
-        visualizzaLayout->getList()->reset();
-        slotDataChanged(true);
+    if(modello->getDataSize()==0){
+        QMessageBox::warning(this, "Attenzione!","Non sono presenti elementi nel modello per poter fare la ricerca.");
+    }else{
+            ricercaLayout->getList()->clear();
+            for(auto it = modello->GetLista_giochi()->begin(); it !=  modello->GetLista_giochi()->end(); ++it){
+                modello->GetLista_search()->push_back(*it);
+}
+
+        if(ricercaLayout->getCbNome()->isChecked())
+                modello-> filterByName( ricercaLayout->getCercaPerNome()->text().toStdString());
+        if(ricercaLayout->getCbTipo()->isChecked())
+                modello->filterByType(ricercaLayout->getCercaPerTipo()->currentText().toStdString());
+        if(ricercaLayout->getCbAnno()->isChecked())
+                modello->filterByYear(ricercaLayout->getCercaPerAnno()->currentText().toStdString());
+        if(ricercaLayout->getCbPegi()->isChecked())
+                 modello->filterByPegi(ricercaLayout->getCercaPerPegi()->currentText().toStdString());
+    }
+    qDebug() <<modello->GetLista_search()->getSize();
+    if(modello->GetLista_search()->getSize()==0){
+           QMessageBox::warning(this, "Informazione",
+                                "Non ci sono giochi che corrispondono ai parametri di ricerca.");
+    }
+    else {
+        for(auto it = modello->GetLista_search()->cbegin(); it != modello->GetLista_search()->cend(); ++it)
+            ricercaLayout->getList()->addGioco(*it);
     }
 }
 
-void Controller::slotEliminaDaModello(Gioco * g) const
+void Controller::slotResetRicerca() const
 {
-    std::cerr<<"slotEliminaDaModello(Abbigliamento* abb)const"<<std::endl;
-    modello->erase(g);
-    delete  g;
-    //ricercaLayout->slotResetRicerca();
-    slotDataChanged(true);
+        modello->resetSearchRes();
 }
 
-//void Controller::slotEliminaDaModello() const
-//{
-//    //    std::cerr<<"slotEliminaDaModello const"<<std::endl;
-//        for(; ricercaLayout->getList()->count()!=0;){
-//            AbbigliamentoListItem* itemDaRicerca= ricercaLayout->getList()->takeItem(0);
-//            AbbigliamentoListItem* itemDaVisualizza=visualizzaLayout->getList()->takeItem(itemDaRicerca->getItemAddress());
-//            delete  itemDaRicerca;
-//            delete  itemDaVisualizza;
-//        }
-//        modello->eliminaTrovati();
-//        slotDataChanged(true);
-//}
+void Controller::slotShowRicerca() const
+{
+        ricercaLayout->show();
+        inserisciLayout->hide();
+        visualizzaLayout->hide();
+}
 
-//void Controller::slotEliminaElemento() const
-//{
+void Controller::slotEliminaElemento() const // visualizzazione
+{
+        if(visualizzaLayout->getList()->count() && visualizzaLayout->getList()->currentItem()!= nullptr){
+                GiochiListItem* item = visualizzaLayout->getList()->takeItem(visualizzaLayout->getList()->currentRow());
+                modello->GetLista_giochi()->erase(item->getItemAddress());
+                delete item;
+                visualizzaLayout->getList()->reset();
+                slotDataChanged(true);
+        }
+}
 
-//}
+void Controller::slotEliminaDaModello() const // ricerca
+{
+         GiochiListItem* item = ricercaLayout->getList()->currentItem();
 
-//void Controller::slot_AddGame() const
-//{
-   //string nome = insert_view->getNome().toUtf8().constData();
+      modello->GetLista_giochi()->erase(item->getItemAddress());
+      ricercaLayout->getList()->reset();
+      visualizzaLayout->getList()->reset();
+      delete item;
 
-//}
+         slotDataChanged(true);
+}
 
 
 

@@ -12,7 +12,7 @@
 #include "Model/xboxone.h"
 
 
-GestioneGiochi::GestioneGiochi(string g):lista_giochi(new DLinkedList<Gioco*>()),isDataSaved(true),path(g)
+GestioneGiochi::GestioneGiochi(string g):lista_giochi(new DLinkedList<Gioco*>()),lista_search(new DLinkedList<Gioco*>()),isDataSaved(true),path(g)
 {
 
 }
@@ -39,6 +39,7 @@ void GestioneGiochi::saveToFile()
     if(!file.open(QIODevice::WriteOnly)) {
         throw OpenFileException("Errore");
     }
+    qDebug() <<"ciao " << QString::fromStdString(path);
 
        QXmlStreamWriter writer(&file);
 
@@ -163,11 +164,18 @@ void GestioneGiochi::loadFromFile(string path)
                 Child = Child.nextSibling().toElement();
             }
             if(platform == "Ps3") {
-
                 toPush = new Ps3(name.toStdString(),year.toStdString(),game_type.toStdString(),pegi.toStdString(),developer.toStdString(),(multiplayer.toStdString()=="si")?true:false,(s4k.toStdString()=="si")?true:false,(online.toStdString()=="si")?true:false,description.toStdString());
-      lista_giochi->push_back(toPush);
-
             }
+            else if(platform == "Ps4") {
+                toPush = new Ps4(name.toStdString(),year.toStdString(),game_type.toStdString(),pegi.toStdString(),developer.toStdString(),(multiplayer.toStdString()=="si")?true:false,(s4k.toStdString()=="si")?true:false,(online.toStdString()=="si")?true:false,description.toStdString());
+            }
+           else  if(platform == "Xbox360") {
+                toPush = new Xbox360(name.toStdString(),year.toStdString(),game_type.toStdString(),pegi.toStdString(),developer.toStdString(),(multiplayer.toStdString()=="si")?true:false,(s4k.toStdString()=="si")?true:false,(online.toStdString()=="si")?true:false,description.toStdString());
+            }
+           else if(platform == "XboxOne") {
+                toPush = new XboxOne(name.toStdString(),year.toStdString(),game_type.toStdString(),pegi.toStdString(),developer.toStdString(),(multiplayer.toStdString()=="si")?true:false,(s4k.toStdString()=="si")?true:false,(online.toStdString()=="si")?true:false,description.toStdString());
+            }
+             lista_giochi->push_back(toPush);
            }
         Component = Component.nextSiblingElement();
 
@@ -179,7 +187,6 @@ void GestioneGiochi::loadFromFile(string path)
 
 Gioco *GestioneGiochi::elementAt(unsigned int index)
 {
-    qDebug() << "sono in elementAT";
     isDataSaved=false;
     return lista_giochi->at(index);
 }
@@ -202,11 +209,9 @@ void GestioneGiochi::setDataSaved(bool data)
 void GestioneGiochi::clear()
 {
     isDataSaved=false;
-    qDebug() << "sono in clear";
+
     if(!lista_giochi->isEmpty()){
-    for(auto it = lista_giochi->begin(); it!=end(); ++it){
-        lista_giochi->pop_back();
-    }
+        lista_giochi->clear();
     }
 
 }
@@ -225,6 +230,11 @@ return lista_giochi->getSize();
 DLinkedList<Gioco *> *GestioneGiochi::GetLista_giochi() const
 {
     return lista_giochi;
+}
+
+DLinkedList<Gioco *> *GestioneGiochi::GetLista_search() const
+{
+    return  lista_search;
 }
 
 
@@ -250,6 +260,56 @@ DLinkedList<Gioco *> *GestioneGiochi::GetLista_giochi() const
   void GestioneGiochi::erase(Gioco *it)
   {
       isDataSaved=false;
-       lista_giochi->erase(it);
+      lista_giochi->erase(it);
   }
 
+  void GestioneGiochi::resetSearchRes()
+  {
+lista_search->clear();
+       //lista_search = new DLinkedList<Gioco*>();
+  }
+
+  void GestioneGiochi::filterByName(string nome)
+  {
+      for(auto it= lista_search->begin(); it!= lista_search->end(); ++it){
+          if(nome != (*it)->getNome()){
+              it = lista_search->erase(it);
+                 --it;
+          }
+      }
+  }
+
+  void GestioneGiochi::filterByType(string tipo)
+  {
+      for(auto it= lista_search->cbegin(); it!= lista_search->cend(); ++it){
+          if(tipo != (*it)->getTipo()){
+              lista_search->erase(*it);
+              --it;
+          }
+      }
+  }
+
+  void GestioneGiochi::filterByPegi(string pegi)
+  {
+      for(auto it= lista_search->cbegin(); it!= lista_search->cend(); ++it){
+          if(pegi != (*it)->getClassificazionePegi()){
+              lista_search->erase(*it);
+              --it;
+          }
+      }
+  }
+
+  void GestioneGiochi::filterByYear(string year)
+  {
+      for(auto it= lista_search->cbegin(); it!= lista_search->cend(); ++it){
+          if(year != (*it)->getAnnoRilascio()){
+              lista_search->erase(*it);
+              --it;
+          }
+      }
+  }
+
+  void GestioneGiochi::setSearchList(DLinkedList<Gioco *> * second)
+  {
+      lista_search = second;
+  }

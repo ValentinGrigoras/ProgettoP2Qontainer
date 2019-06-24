@@ -3,8 +3,8 @@
 ComboBoxTipo::ComboBoxTipo(QWidget* parent):
     QComboBox (parent)
 {
-    addItem("PS3");
-    addItem("PS4");
-    addItem("XBOX360");
-    addItem("XBOXONE");
+    addItem("Ps3");
+    addItem("Ps4");
+    addItem("Xbox360");
+    addItem("XboxOne");
 }
