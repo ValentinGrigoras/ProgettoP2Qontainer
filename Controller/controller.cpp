@@ -1,5 +1,4 @@
 #include "controller.h"
-#include "View/insertview.h"
 #include"View/layoutvisualizzagiochi.h"
 #include"Model/ps3.h"
 #include"Model/ps4.h"
@@ -34,8 +33,6 @@ dialog(nullptr)
     mainLayout->addWidget(visualizzaLayout);
 
 
-    //QRegExp name_exp ("/^[a-zA-Z]\\[a-zA-Z0-0]{,2,15}$/") ;
-    //QValidator *validator = new QRegExpValidator(name_exp, this);
     setLayout(mainLayout);
 
     slotShowInserisci();
@@ -54,6 +51,7 @@ dialog(nullptr)
     connect(ricercaLayout->getReset(),SIGNAL(clicked()), ricercaLayout, SLOT(slotResetRicerca()));
     connect(ricercaLayout->getReset(),SIGNAL(clicked()), this, SLOT(slotResetRicerca()));
 
+    connect(inserisciLayout->getTipo(),SIGNAL(activated(QString)),this,SLOT( ChangeComboContent(QString)));
     setFixedSize(inserisciLayout->width()+visualizzaLayout->width()+100, inserisciLayout->height()+80);
 
     QMessageBox msgBox;
@@ -62,6 +60,12 @@ dialog(nullptr)
 }
 Controller::~Controller(){}
 
+void Controller::ChangeComboContent(QString p)
+{
+    inserisciLayout->getAnno()->CreateComboBox(p.toStdString());
+
+}
+
 void Controller::slotShowInserisci() const{
     inserisciLayout->show();
     visualizzaLayout->show();
@@ -69,37 +73,43 @@ void Controller::slotShowInserisci() const{
 }
 void Controller::slotAggiungiElemento()
 {
-    int  indiceTipo = inserisciLayout->getTipo()->currentIndex();
-    string push_nome = inserisciLayout->getNome()->text().toStdString();
-    string  indiceAnno = inserisciLayout->getAnno()->currentText().toStdString();
-    string push_sviluppatore = inserisciLayout->getSviluppatore()->text().toStdString();
-    string indicePegi = inserisciLayout->getPegi()->currentText().toStdString();
-    string  indiceGenere = inserisciLayout->getGenere()->currentText().toStdString();
-    string  descrizione = inserisciLayout->getDescrizione()->toPlainText().toStdString();
-    Gioco* toPush=nullptr;
-    switch (indiceTipo) {
-        case 0:
-            toPush = new Ps3(push_nome,indiceAnno,indiceGenere,indicePegi,push_sviluppatore,inserisciLayout->getMultiplayer()->isChecked(), inserisciLayout->get4k()->isChecked(),inserisciLayout->getOnline()->isChecked(), descrizione);
-            break;
-        case 1:
-            toPush = new Ps4(push_nome,indiceAnno,indiceGenere,indicePegi,push_sviluppatore,inserisciLayout->getMultiplayer()->isChecked(), inserisciLayout->get4k()->isChecked(),inserisciLayout->getOnline()->isChecked(), descrizione);
-            break;
-        case 2:
-            toPush = new Xbox360(push_nome,indiceAnno,indiceGenere,indicePegi,push_sviluppatore,inserisciLayout->getMultiplayer()->isChecked(), inserisciLayout->get4k()->isChecked(),inserisciLayout->getOnline()->isChecked(), descrizione);
-            break;
-        case 3:
-            toPush = new XboxOne(push_nome,indiceAnno,indiceGenere,indicePegi,push_sviluppatore,inserisciLayout->getMultiplayer()->isChecked(), inserisciLayout->get4k()->isChecked(),inserisciLayout->getOnline()->isChecked(), descrizione);
-            break;
-    }
-    cout<<toPush;
-    if(toPush!= nullptr){
-        modello->push_end(toPush);
-        visualizzaLayout->getList()->addGioco(toPush);
-        slotDataChanged(true);
-        QMessageBox::information(this,"Conferma", "Il gioco è stato inserito correttamente");
+    if(! inserisciLayout->getNome()->text().isEmpty() &&
+            ! inserisciLayout->getSviluppatore()->text().isEmpty() &&
+            ! inserisciLayout->getDescrizione()->document()->isEmpty())
+    {
+                int  indiceTipo = inserisciLayout->getTipo()->currentIndex();
+                string push_nome = inserisciLayout->getNome()->text().toStdString();
+                string  indiceAnno = inserisciLayout->getAnno()->currentText().toStdString();
+                string push_sviluppatore = inserisciLayout->getSviluppatore()->text().toStdString();
+                string indicePegi = inserisciLayout->getPegi()->currentText().toStdString();
+                string  indiceGenere = inserisciLayout->getGenere()->currentText().toStdString();
+                string  descrizione = inserisciLayout->getDescrizione()->toPlainText().toStdString();
+
+                Gioco* toPush=nullptr;
+                switch (indiceTipo) {
+                    case 0:
+                        toPush = new Ps3(push_nome,indiceAnno,indiceGenere,indicePegi,push_sviluppatore,inserisciLayout->getMultiplayer()->isChecked(), inserisciLayout->get4k()->isChecked(),inserisciLayout->getOnline()->isChecked(), descrizione);
+                        break;
+                    case 1:
+                        toPush = new Ps4(push_nome,indiceAnno,indiceGenere,indicePegi,push_sviluppatore,inserisciLayout->getMultiplayer()->isChecked(), inserisciLayout->get4k()->isChecked(),inserisciLayout->getOnline()->isChecked(), descrizione);
+                        break;
+                    case 2:
+                        toPush = new Xbox360(push_nome,indiceAnno,indiceGenere,indicePegi,push_sviluppatore,inserisciLayout->getMultiplayer()->isChecked(), inserisciLayout->get4k()->isChecked(),inserisciLayout->getOnline()->isChecked(), descrizione);
+                        break;
+                    case 3:
+                        toPush = new XboxOne(push_nome,indiceAnno,indiceGenere,indicePegi,push_sviluppatore,inserisciLayout->getMultiplayer()->isChecked(), inserisciLayout->get4k()->isChecked(),inserisciLayout->getOnline()->isChecked(), descrizione);
+                        break;
+                }
+                cout<<toPush;
+                if(toPush!= nullptr){
+                    modello->push_end(toPush);
+                    visualizzaLayout->getList()->addGioco(toPush);
+                    slotDataChanged(true);
+                    QMessageBox::information(this,"Conferma", "Il gioco è stato inserito correttamente");
+                }
     }
     else{
-        QMessageBox::information(this,"Errore", "Il tuo oggetto è vuoto");
+        QMessageBox::information(this,"Errore", "Attenzione! Compila tutti i campi");
     }
 }
 
@@ -166,7 +176,6 @@ void Controller::slotShowModifica()
 
 void Controller::slotRicerca()
 {
-
     if(modello->getDataSize()==0){
         QMessageBox::warning(this, "Attenzione!","Non sono presenti elementi nel modello per poter fare la ricerca.");
     }else{
@@ -174,16 +183,20 @@ void Controller::slotRicerca()
             for(auto it = modello->GetLista_giochi()->begin(); it !=  modello->GetLista_giochi()->end(); ++it){
                 modello->GetLista_search()->push_back(*it);
 }
+        if(ricercaLayout->getCbNome()->isChecked() && ! ricercaLayout->getCercaPerNome()->text().isEmpty()){
 
-        if(ricercaLayout->getCbNome()->isChecked())
                 modello-> filterByName( ricercaLayout->getCercaPerNome()->text().toStdString());
-        if(ricercaLayout->getCbTipo()->isChecked())
+        }
+
+
+
+ if(ricercaLayout->getCbTipo()->isChecked())
                 modello->filterByType(ricercaLayout->getCercaPerTipo()->currentText().toStdString());
-        if(ricercaLayout->getCbAnno()->isChecked())
-                modello->filterByYear(ricercaLayout->getCercaPerAnno()->currentText().toStdString());
-        if(ricercaLayout->getCbPegi()->isChecked())
+  if(ricercaLayout->getCbPegi()->isChecked())
                  modello->filterByPegi(ricercaLayout->getCercaPerPegi()->currentText().toStdString());
+
     }
+
     qDebug() <<modello->GetLista_search()->getSize();
     if(modello->GetLista_search()->getSize()==0){
            QMessageBox::warning(this, "Informazione",
@@ -193,6 +206,7 @@ void Controller::slotRicerca()
         for(auto it = modello->GetLista_search()->cbegin(); it != modello->GetLista_search()->cend(); ++it)
             ricercaLayout->getList()->addGioco(*it);
     }
+
 }
 
 void Controller::slotResetRicerca() const

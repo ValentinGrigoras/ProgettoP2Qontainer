@@ -4,15 +4,9 @@
 
 Ps3::Ps3(std::string pNome, string pAnno, std::string pGenere, string pPegi , std::string pSviluppatore, bool pMultiplayer, bool p4k, bool pOnline, std::string pDescrizione)
 
-    :Gioco(pNome, pAnno, pGenere, pPegi, pSviluppatore, pMultiplayer, p4k, pOnline, pDescrizione)
-{
+    :Gioco(pNome, pAnno, pGenere, pPegi, pSviluppatore, pMultiplayer, p4k, pOnline, pDescrizione){}
 
-}
 
-unsigned short Ps3::getAnnoRilascioMinimo() const // 11 novembre 2006
-{
-    return 2006;
-}
 
 Ps3::Ps3(const Ps3 & g): Gioco(g)
 {

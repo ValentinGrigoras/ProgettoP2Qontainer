@@ -12,25 +12,21 @@
 #include "Model/xboxone.h"
 
 
-GestioneGiochi::GestioneGiochi(string g):lista_giochi(new DLinkedList<Gioco*>()),lista_search(new DLinkedList<Gioco*>()),isDataSaved(true),path(g)
-{
-
-}
+GestioneGiochi::GestioneGiochi(string g):lista_giochi(new DLinkedList<Gioco*>()),lista_search(new DLinkedList<Gioco*>()),isDataSaved(true),path(g){}
 
 GestioneGiochi::~GestioneGiochi()
 {
-    for (DLinkedList<Gioco*>::list_iterator it = lista_giochi->begin(); it != lista_giochi->end(); it++)
-    {
-
-            delete *it;
-}
+        for (DLinkedList<Gioco*>::list_iterator it = lista_giochi->begin(); it != lista_giochi->end(); it++)
+        {
+                delete *it;
+        }
 }
 
 void GestioneGiochi::push_end(Gioco * g)
 {
-    lista_giochi->push_back(g);
+        lista_giochi->push_back(g);
 
-isDataSaved=false;
+        isDataSaved=false;
 }
 
 void GestioneGiochi::saveToFile()
@@ -39,8 +35,6 @@ void GestioneGiochi::saveToFile()
     if(!file.open(QIODevice::WriteOnly)) {
         throw OpenFileException("Errore");
     }
-    qDebug() <<"ciao " << QString::fromStdString(path);
-
        QXmlStreamWriter writer(&file);
 
           writer.setAutoFormatting(true); // Per leggibilità del file XML
@@ -53,42 +47,41 @@ void GestioneGiochi::saveToFile()
           while(it!= lista_giochi->cend()){
                  Gioco* toSave = *it;
 
+                    writer.writeStartElement("Gioco");
+                   writer.writeAttribute("tipo", QString::fromStdString(toSave->getTipo()));
 
-            writer.writeStartElement("Gioco");
-           writer.writeAttribute("tipo", QString::fromStdString(toSave->getTipo()));
+                   writer.writeStartElement("nome");
+                   writer.writeCharacters(QString::fromStdString(toSave->getNome()));
+                   writer.writeEndElement();
+                   writer.writeStartElement("anno");
+                   writer.writeCharacters(QString::fromStdString(toSave->getAnnoRilascio()));
+                   writer.writeEndElement();
+                   writer.writeStartElement("genere");
+                   writer.writeCharacters(QString::fromStdString(toSave->getGenere()));
+                   writer.writeEndElement();
+                   writer.writeStartElement("pegi");
+                   writer.writeCharacters(QString::fromStdString(toSave->getClassificazionePegi()));
+                   writer.writeEndElement();
+                   writer.writeStartElement("sviluppatore");
+                   writer.writeCharacters(QString::fromStdString(toSave->getSviluppatore()));
+                   writer.writeEndElement();
+                   writer.writeStartElement("multiplayer");
+                   writer.writeCharacters(QString::fromStdString(toSave->getMultiplayer()?"yes":"no"));
+                   writer.writeEndElement();
+                   writer.writeStartElement("s4k");
+                   writer.writeCharacters(QString::fromStdString(toSave->get4k()?"yes":"no"));
+                   writer.writeEndElement();
+                   writer.writeStartElement("online");
+                   writer.writeCharacters(QString::fromStdString(toSave->getOnline()?"yes":"no"));
+                   writer.writeEndElement();
+                   writer.writeStartElement("descrizione");
+                   writer.writeCharacters(QString::fromStdString(toSave->getDescrizione()));
+                   writer.writeEndElement();
+                    writer.writeEndElement();
+                       if (writer.hasError()) {// se c'è stato un problema in scrittura interrompe ed esce
+                                  throw std::exception();}
 
-           writer.writeStartElement("nome");
-           writer.writeCharacters(QString::fromStdString(toSave->getNome()));
-           writer.writeEndElement();
-           writer.writeStartElement("anno");
-           writer.writeCharacters(QString::fromStdString(toSave->getAnnoRilascio()));
-           writer.writeEndElement();
-           writer.writeStartElement("genere");
-           writer.writeCharacters(QString::fromStdString(toSave->getGenere()));
-           writer.writeEndElement();
-           writer.writeStartElement("pegi");
-           writer.writeCharacters(QString::fromStdString(toSave->getClassificazionePegi()));
-           writer.writeEndElement();
-           writer.writeStartElement("sviluppatore");
-           writer.writeCharacters(QString::fromStdString(toSave->getSviluppatore()));
-           writer.writeEndElement();
-           writer.writeStartElement("multiplayer");
-           writer.writeCharacters(QString::fromStdString(toSave->getMultiplayer()?"yes":"no"));
-           writer.writeEndElement();
-           writer.writeStartElement("s4k");
-           writer.writeCharacters(QString::fromStdString(toSave->get4k()?"yes":"no"));
-           writer.writeEndElement();
-           writer.writeStartElement("online");
-           writer.writeCharacters(QString::fromStdString(toSave->getOnline()?"yes":"no"));
-           writer.writeEndElement();
-           writer.writeStartElement("descrizione");
-           writer.writeCharacters(QString::fromStdString(toSave->getDescrizione()));
-           writer.writeEndElement();
-            writer.writeEndElement();
-               if (writer.hasError()) {// se c'è stato un problema in scrittura interrompe ed esce
-                          throw std::exception();}
-
-               ++it;
+                       ++it;
           }
           writer.writeEndDocument();  // chiude eventuali tag lasciati aperti e aggiunge una riga vuota alla fine
 
@@ -106,9 +99,7 @@ void GestioneGiochi::loadFromFile(string path)
     {
         // Error while loading file
         std::cerr << "Error while loading file" << std::endl;
-
     }
-
     // Set data into the QDomDocument before processing
     xmlBOM.setContent(&f);
     f.close();
@@ -116,17 +107,16 @@ void GestioneGiochi::loadFromFile(string path)
     // Extract the root markup
     QDomElement root=xmlBOM.documentElement(); // root tag
 
-    // Get the first child of the root (Markup COMPONENT is expected)
+    // Get the first child of the root (Markup Gioco is expected)
     QDomElement Component=root.firstChild().toElement();
 
     // Loop while there is a child
     while(!Component.isNull())
     {
-
         // Check if the child tag name is Gioco
         if (Component.tagName()=="Gioco")
         {
-     Gioco* toPush;
+                Gioco* toPush;
             // Read and display the component ID
             QString platform=Component.attribute("tipo","no name");
 
@@ -178,95 +168,87 @@ void GestioneGiochi::loadFromFile(string path)
              lista_giochi->push_back(toPush);
            }
         Component = Component.nextSiblingElement();
-
     }
     isDataSaved=true;
 }
 
-
-
 Gioco *GestioneGiochi::elementAt(unsigned int index)
 {
-    isDataSaved=false;
-    return lista_giochi->at(index);
+        isDataSaved=false;
+        return lista_giochi->at(index);
 }
 
 string GestioneGiochi::getPath() const
 {
-    return path;
+     return path;
 }
 
 bool GestioneGiochi::getIsDataSaved() const
 {
-    return isDataSaved;
+        return isDataSaved;
 }
 
 void GestioneGiochi::setDataSaved(bool data)
 {
-    isDataSaved=data;
+        isDataSaved=data;
 }
 
 void GestioneGiochi::clear()
 {
-    isDataSaved=false;
+        isDataSaved=false;
 
-    if(!lista_giochi->isEmpty()){
-        lista_giochi->clear();
-    }
-
+        if(!lista_giochi->isEmpty()){
+            lista_giochi->clear();
+        }
 }
 
 void GestioneGiochi::printAll() const
 {
-    qDebug() << "sono in printAll di Gestione Giochi";
-lista_giochi->PrintAll();
+        lista_giochi->PrintAll();
 }
 
 unsigned int GestioneGiochi::getDataSize() const
 {
-return lista_giochi->getSize();
+        return lista_giochi->getSize();
 }
 
 DLinkedList<Gioco *> *GestioneGiochi::GetLista_giochi() const
 {
-    return lista_giochi;
+        return lista_giochi;
 }
 
 DLinkedList<Gioco *> *GestioneGiochi::GetLista_search() const
 {
-    return  lista_search;
+        return  lista_search;
 }
 
 
   DLinkedList<Gioco*>::list_iterator GestioneGiochi::begin()
 {
-    isDataSaved=false;
-    return  lista_giochi->begin();
+        isDataSaved=false;
+        return  lista_giochi->begin();
   }
 
   DLinkedList<Gioco*>::list_iterator GestioneGiochi::end()
   {
-      isDataSaved=false;
-      return lista_giochi->end();
+          isDataSaved=false;
+          return lista_giochi->end();
   }
 
   void GestioneGiochi::setNewPath(string str)
   {
-      path= str;
-      qDebug() << "prima di destroy in setNewPAth";
-
+          path= str;
   }
 
   void GestioneGiochi::erase(Gioco *it)
   {
-      isDataSaved=false;
-      lista_giochi->erase(it);
+          isDataSaved=false;
+          lista_giochi->erase(it);
   }
 
   void GestioneGiochi::resetSearchRes()
   {
-lista_search->clear();
-       //lista_search = new DLinkedList<Gioco*>();
+        lista_search->clear();
   }
 
   void GestioneGiochi::filterByName(string nome)
@@ -281,7 +263,7 @@ lista_search->clear();
 
   void GestioneGiochi::filterByType(string tipo)
   {
-      for(auto it= lista_search->cbegin(); it!= lista_search->cend(); ++it){
+      for(auto it= lista_search->begin(); it!= lista_search->end(); ++it){
           if(tipo != (*it)->getTipo()){
               lista_search->erase(*it);
               --it;
@@ -291,7 +273,7 @@ lista_search->clear();
 
   void GestioneGiochi::filterByPegi(string pegi)
   {
-      for(auto it= lista_search->cbegin(); it!= lista_search->cend(); ++it){
+      for(auto it= lista_search->begin(); it!= lista_search->end(); ++it){
           if(pegi != (*it)->getClassificazionePegi()){
               lista_search->erase(*it);
               --it;
@@ -301,7 +283,7 @@ lista_search->clear();
 
   void GestioneGiochi::filterByYear(string year)
   {
-      for(auto it= lista_search->cbegin(); it!= lista_search->cend(); ++it){
+      for(auto it= lista_search->begin(); it!= lista_search->end(); ++it){
           if(year != (*it)->getAnnoRilascio()){
               lista_search->erase(*it);
               --it;

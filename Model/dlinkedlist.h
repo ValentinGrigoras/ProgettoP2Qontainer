@@ -65,38 +65,38 @@ public:
     };
 DLinkedList();
 
-void Destroy();//distruttore
-void PrintAll();
-    bool operator== (const DLinkedList<T>&)const;
-    bool operator!= (const DLinkedList<T>&)const;
+        void Destroy();//distruttore
+        void PrintAll();
+        bool operator== (const DLinkedList<T>&)const;
+        bool operator!= (const DLinkedList<T>&)const;
 
-    bool isEmpty()const;
+        bool isEmpty()const;
 
-  const_list_iterator cbegin()const;
-const_list_iterator cend()const;
+        const_list_iterator cbegin()const;
+        const_list_iterator cend()const;
 
- list_iterator begin();
-   list_iterator end();
+        list_iterator begin();
+        list_iterator end();
 
-    T& at(unsigned int);
+        T& at(unsigned int);
 
-unsigned int getSize() const;
+        unsigned int getSize() const;
 
- void clear();
-  DLinkedList<T> & operator= (const DLinkedList<T> &);//costruttore di assegnazione
+        void clear();
+        DLinkedList<T> & operator= (const DLinkedList<T> &);//costruttore di assegnazione
 
-    //METODI DI MODIFICA DEL DOUBLY LINKED LIST
-    void push_back(const T& ogg);
-    void push_front(const T& ogg);
-    void pop_back();
-    void pop_front();
+        //METODI DI MODIFICA DEL DOUBLY LINKED LIST
+        void push_back(const T& ogg);
+        void push_front(const T& ogg);
+        void pop_back();
+        void pop_front();
 
-    list_iterator erase(list_iterator it);
-    void erase(T);
-    list_iterator insert(list_iterator it, const T& ogg);
+        list_iterator erase(list_iterator it);
+        void erase(T);
+        list_iterator insert(list_iterator it, const T& ogg);
 
-    friend const_list_iterator;
-    friend list_iterator;
+        friend const_list_iterator;
+        friend list_iterator;
 
 };
 template <class T>
@@ -112,7 +112,7 @@ T& DLinkedList<T>::Nodo::operator*(){
 
 template <class T>
 DLinkedList<T>::DLinkedList(): first(nullptr),last(nullptr) {}
-//implementazione metodi di list_iterator
+//-----------------------------------implementazione metodi di list_iterator -------------------------------------------------------------------------------------------
 //COSTRUTTORE DI DEFAULT
 template<class T>
 DLinkedList<T>::list_iterator::list_iterator(): p(nullptr), past_the_end(false){}
@@ -244,14 +244,9 @@ typename DLinkedList<T>::const_list_iterator& DLinkedList<T>::const_list_iterato
         {
 
             throw InvalidIterator();
-}
+        }
             if(cp->next) cp=cp->next; else{ cp=cp+1; past_the_end=true;}
      return *this;
-//    if(!past_the_end && cp) {
-//  if(cp->next == nullptr) {cp = cp+1; past_the_end=true;}
-//  else cp = cp->next;
-//    }
-//    return *this;
 }
 
 //OPERATORE POST INCREMENTO
@@ -312,31 +307,31 @@ void DLinkedList<T>::push_front(const T& ogg){
 //POP BACK DI DLINKED LIST
 template<class T>
 void DLinkedList<T>::pop_back(){
-if(first){
-    if (first==last){
-        delete first;
-        first=last=nullptr;
-      }else
-      {
-        last=last->prev;
-        delete last->next;
-        last->next=nullptr;
-      }
-}
+    if(first){
+        if (first==last){
+            delete first;
+            first=last=nullptr;
+          }else
+          {
+            last=last->prev;
+            delete last->next;
+            last->next=nullptr;
+          }
+    }
 }
 //POP FRONT DI DLINKED LIST
 template <class T>
 void DLinkedList<T>::pop_front(){
-if(first){
-    if (first==last){
-        delete first;
-        first=last=nullptr;
-      }else{
-        first=first->next;
-        delete first->prev;
-        first->prev=nullptr;
-      }
-}
+    if(first){
+        if (first==last){
+            delete first;
+            first=last=nullptr;
+          }else{
+            first=first->next;
+            delete first->prev;
+            first->prev=nullptr;
+          }
+    }
 }
 
 //METODO D'APPOGGIO DI DLINKED LIST
@@ -357,7 +352,7 @@ bool DLinkedList<T>::operator==(const DLinkedList<T>& dl2 )const{
            p_dl1=p_dl1->next; p_dl2=p_dl2->next;
 
     }
-return (!p_dl1 && !p_dl2); //this is dope :)
+return (!p_dl1 && !p_dl2); //magic
 
 }
 //OPERATORE DI DISUGUAGLIANZA TRA 2 DLINKED LIST
@@ -368,30 +363,6 @@ bool DLinkedList<T>::operator!=(const DLinkedList<T>& l) const{
 //METODO ERASE DI DILINKED LIST (DA VERIFICARE)
 template <class T>
 typename DLinkedList<T>::list_iterator DLinkedList<T>::erase(typename DLinkedList<T>::list_iterator it){
-//    if(first == nullptr) throw "Lista vuota"; // caso lista vuota
-
-//     list_iterator salva(nullptr,false);
-//   if  (it.p->prev!=nullptr)
-//       salva=list_iterator(it.p->prev,false);
-//     else
-//               salva=list_iterator(last,false);
-
-//            if(first == last){ // caso lista con un elemento
-//                          first = nullptr;
-//                            last=nullptr;
-//             }else
-//                            if(it.p == first){ // caso in cui l'elemento da eliminare si trova in prima posizione
-//                                          first = it.p->next;
-//                                          first->prev = nullptr;
-//                            }else
-//                                            if(it.p == last){ // caso in cui ho almeno 2 nodi e l'elemento da eliminare si trova nell'ultima posizione
-//                                                         last = it.p->prev;
-//                                                         last->next=nullptr;
-//                                                  }else{
-//                                                                 it.p->prev->next = it.p->next;
-//                                                                  it.p->next ->prev = it.p->prev; }
-//      delete it.p;
-//      return salva++;
     list_iterator daRitornare = it;
     if (it.p == first)
                 first = first->next;
@@ -474,9 +445,7 @@ void DLinkedList<T>::erase(T  oggetto){
 trovato = true;
 delete it.p;
         }
-
     }
-
 }
 
 template <typename T>
@@ -507,8 +476,6 @@ void DLinkedList<T>::clear(){
       pop_front();
     }
 
-
-
 template<typename T>
 void DLinkedList<T>::Destroy(){
     while(first == nullptr){
@@ -528,11 +495,10 @@ if (this != &t)
      return *this;
 }
 template<typename T>
-void DLinkedList<T>::PrintAll(){
+void DLinkedList<T>::PrintAll(){ // print to  console debug
     for(auto it = begin(); it!=end(); ++it){
         qDebug() << *it << endl;
     }
-
 }
 
 #endif // DLINKEDLIST_H

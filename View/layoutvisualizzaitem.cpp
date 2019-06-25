@@ -22,34 +22,34 @@ LayoutVisualizzaItem::LayoutVisualizzaItem(GiochiListItem* a, QWidget* parent):
   sviluppatore(new QTextEdit(parent))
 
 {
- QVBoxLayout* mainLayout= new QVBoxLayout();
-QLabel * svilupp = new QLabel(tr("Sviluppatore"));
-  sviluppatore->setText(QString::fromStdString(g->getSviluppatore()));
- descrizione->setText(QString::fromStdString(g->getDescrizione()));
- mainLayout->addWidget(new QLabel("Descrizione: "));
- mainLayout->addWidget(descrizione);
- mainLayout->addWidget(svilupp);
-  mainLayout->addWidget(sviluppatore);
- QHBoxLayout* btnLayout= new QHBoxLayout();
- btnLayout->addWidget(salvaModifica);
- btnLayout->addWidget(btnClose);
+        QVBoxLayout* mainLayout= new QVBoxLayout();
+        QLabel * svilupp = new QLabel(tr("Sviluppatore"));
+        sviluppatore->setText(QString::fromStdString(g->getSviluppatore()));
+        descrizione->setText(QString::fromStdString(g->getDescrizione()));
+        mainLayout->addWidget(new QLabel("Descrizione: "));
+        mainLayout->addWidget(descrizione);
+        mainLayout->addWidget(svilupp);
+        mainLayout->addWidget(sviluppatore);
+        QHBoxLayout* btnLayout= new QHBoxLayout();
+        btnLayout->addWidget(salvaModifica);
+        btnLayout->addWidget(btnClose);
 
- mainLayout->addLayout(btnLayout);
+        mainLayout->addLayout(btnLayout);
 
 
- setLayout(mainLayout);
- setModal(true);
- setFont(QFont("lucida",14,3));
- connect(btnClose,SIGNAL(clicked()),this,SLOT(close()));
- connect(salvaModifica,SIGNAL(clicked()),this,SLOT(slotSalvaModifica()));
- connect(salvaModifica,SIGNAL(clicked()), this,SLOT(close()));
+        setLayout(mainLayout);
+        setModal(true);
+        setFont(QFont("lucida",14,3));
+        connect(btnClose,SIGNAL(clicked()),this,SLOT(close()));
+        connect(salvaModifica,SIGNAL(clicked()),this,SLOT(slotSalvaModifica()));
+        connect(salvaModifica,SIGNAL(clicked()), this,SLOT(close()));
 
 }
 
 void LayoutVisualizzaItem::slotSalvaModifica()const{
 
-    g->setDescrizione(descrizione->toPlainText().toStdString());
-    g->setDescrizione(sviluppatore->toPlainText().toStdString());
+        g->setDescrizione(descrizione->toPlainText().toStdString());
+        g->setDescrizione(sviluppatore->toPlainText().toStdString());
         listItem->update();
 
 }

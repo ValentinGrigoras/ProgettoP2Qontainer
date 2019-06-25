@@ -6,11 +6,6 @@ XboxOne::XboxOne(std::string pNome, string pAnno, std::string pGenere, string pP
 
 }
 
-unsigned short XboxOne::getAnnoRilascioMinimo() const //	22 novembre 2013
-{
-    return 2013;
-}
-
 std::string XboxOne::getTipo() const
 {
     return "XboxOne";

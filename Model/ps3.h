@@ -9,12 +9,11 @@ private:
 
 public:
   Ps3(string="", string = "2019", string ="FPS", string ="18", string ="EaSports", bool =true, bool =false, bool =true, string="vuoto");//costruttore a 5 parametri con valori di default
-protected:
-     unsigned short int getAnnoRilascioMinimo()const override;// 11 novembre 2006
+
 
       virtual ~Ps3() override=default;
     Ps3(const Ps3&); // costruttore di copia
-   string getTipo()const override;
+   string getTipo()const override; // metodo virtuale
 
     bool  operator==(const Ps3&) const;
     bool  operator!=(const Ps3&) const;

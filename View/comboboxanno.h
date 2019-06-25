@@ -6,6 +6,7 @@ class ComboBoxAnno : public QComboBox
 {
 public:
     ComboBoxAnno(QWidget* =nullptr);
+    void CreateComboBox(std::string);
 };
 
 #endif // COMBOBOXANNO_H

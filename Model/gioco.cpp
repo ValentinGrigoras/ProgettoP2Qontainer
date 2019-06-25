@@ -97,7 +97,7 @@ void Gioco::setNome(std::string pNome)
     nome = pNome;
 }
 
-void Gioco::setAnnoRilascio(int pAnnoRilascio)
+void Gioco::setAnnoRilascio(string pAnnoRilascio)
 {
     annoRilascio = pAnnoRilascio;
 }

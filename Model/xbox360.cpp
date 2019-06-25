@@ -6,10 +6,6 @@ Xbox360::Xbox360(std::string pNome, string pAnno, std::string pGenere, string pP
 {
 
 }
-unsigned short Xbox360::getAnnoRilascioMinimo() const //22 novembre 2005
-{
-    return 2005;
-}
 
 
 std::string Xbox360::getTipo() const

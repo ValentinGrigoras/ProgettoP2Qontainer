@@ -9,7 +9,7 @@ class GiochiListWidget : public QListWidget
 {
       Q_OBJECT
     QWidget* parent;
-    QAction* onClickAction, *onRightClickAction;
+   // QAction* onClickAction, *onRightClickAction;
 
 
 public:

@@ -21,8 +21,6 @@ private:
     QCheckBox *cbNome;
     ComboBoxTipo *cercaPerTipo;
      QCheckBox *cbTipo;
-     ComboBoxAnno *cercaPerAnno;
-     QCheckBox *cbAnno;
      ComboBoxPegi*cercaPerPegi;
       QCheckBox *cbPegi;
     GestioneGiochi* modello;
@@ -33,12 +31,9 @@ public:
     LayoutRicerca(QWidget* = nullptr);
     QLineEdit *getCercaPerNome() const;
     ComboBoxTipo *getCercaPerTipo() const;
-    ComboBoxAnno *getCercaPerAnno() const;
     ComboBoxPegi *getCercaPerPegi() const;
 
     QCheckBox *getCbNome() const;
-
-    QCheckBox *getCbAnno() const;
     QCheckBox *getCbPegi() const;
     QCheckBox *getCbTipo() const;
 

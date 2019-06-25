@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--File di salvataggio dell'applicazione. Non modificare a mano.-->
 <root>
-    <Gioco tipo="Ps3">
+    <Gioco tipo="XboxOne">
         <nome>Gioco1</nome>
         <anno>2019</anno>
-        <genere></genere>
-        <pegi></pegi>
-        <sviluppatore></sviluppatore>
+        <genere>FPS</genere>
+        <pegi>Pegi 3</pegi>
+        <sviluppatore>Academy</sviluppatore>
         <multiplayer>no</multiplayer>
         <s4k>no</s4k>
         <online>no</online>
@@ -15,9 +15,9 @@
     <Gioco tipo="Ps3">
         <nome>Gioco2</nome>
         <anno>2019</anno>
-        <genere></genere>
-        <pegi></pegi>
-        <sviluppatore></sviluppatore>
+        <genere>Arcade</genere>
+        <pegi>Pegi18</pegi>
+        <sviluppatore>Unipd</sviluppatore>
         <multiplayer>no</multiplayer>
         <s4k>no</s4k>
         <online>no</online>
@@ -26,9 +26,9 @@
     <Gioco tipo="Ps3">
         <nome>Gioco3</nome>
         <anno>2019</anno>
-        <genere></genere>
-        <pegi></pegi>
-        <sviluppatore></sviluppatore>
+        <genere>FPS</genere>
+        <pegi>Pegi 16</pegi>
+        <sviluppatore>Ubisoft</sviluppatore>
         <multiplayer>no</multiplayer>
         <s4k>no</s4k>
         <online>no</online>
@@ -37,24 +37,13 @@
     <Gioco tipo="Ps3">
         <nome>Gioco4</nome>
         <anno>2019</anno>
-        <genere></genere>
-        <pegi></pegi>
+        <genere>FPS</genere>
+        <pegi>Pegi 18</pegi>
         <sviluppatore></sviluppatore>
         <multiplayer>no</multiplayer>
         <s4k>no</s4k>
         <online>no</online>
         <descrizione>adasda</descrizione>
-    </Gioco>
-    <Gioco tipo="Ps3">
-        <nome>NuovoGioco</nome>
-        <anno>2005</anno>
-        <genere>Arcade</genere>
-        <pegi>Pegi 3</pegi>
-        <sviluppatore>Valentin</sviluppatore>
-        <multiplayer>yes</multiplayer>
-        <s4k>no</s4k>
-        <online>yes</online>
-        <descrizione>djakldjklajdklajdklajlkajkla</descrizione>
     </Gioco>
     <Gioco tipo="Ps3">
         <nome>NuovoGioco</nome>
@@ -65,11 +54,11 @@
         <multiplayer>yes</multiplayer>
         <s4k>no</s4k>
         <online>yes</online>
-        <descrizione>djakldjklajdklajdklajlkajkla</descrizione>
+        <descrizione>Questa è una breve descrizione</descrizione>
     </Gioco>
-    <Gioco tipo="Ps3">
+    <Gioco tipo="Ps4">
         <nome>NuovoGioco</nome>
-        <anno>2007</anno>
+        <anno>2018</anno>
         <genere>Arcade</genere>
         <pegi>Pegi 3</pegi>
         <sviluppatore>Valentin</sviluppatore>
@@ -78,22 +67,12 @@
         <online>yes</online>
         <descrizione>djakldjklajdklajdklajlkajkla</descrizione>
     </Gioco>
-<Gioco tipo="Ps3">
-        <nome>Gioco1</nome>
-        <anno>2010</anno>
-        <genere></genere>
-        <pegi></pegi>
-        <sviluppatore></sviluppatore>
-        <multiplayer>no</multiplayer>
-        <s4k>no</s4k>
-        <online>no</online>
-        <descrizione>asdasda</descrizione>
-    </Gioco>
+
     <Gioco tipo="XboxOne">
         <nome>Gioco2</nome>
         <anno>2019</anno>
-        <genere></genere>
-        <pegi></pegi>
+        <genere>Simulazione</genere>
+        <pegi>Pegi 18</pegi>
         <sviluppatore></sviluppatore>
         <multiplayer>no</multiplayer>
         <s4k>no</s4k>
@@ -104,27 +83,16 @@
         <nome>Gioco3</nome>
         <anno>2019</anno>
         <genere></genere>
-        <pegi></pegi>
-        <sviluppatore></sviluppatore>
+        <pegi>Pegi 16</pegi>
+        <sviluppatore>Unipd</sviluppatore>
         <multiplayer>no</multiplayer>
         <s4k>no</s4k>
         <online>no</online>
         <descrizione>adadad</descrizione>
-    </Gioco>
-    <Gioco tipo="Ps3">
-        <nome>Gioco4</nome>
-        <anno>2019</anno>
-        <genere></genere>
-        <pegi></pegi>
-        <sviluppatore></sviluppatore>
-        <multiplayer>no</multiplayer>
-        <s4k>no</s4k>
-        <online>no</online>
-        <descrizione>adasda</descrizione>
     </Gioco>
     <Gioco tipo="Xbox360">
         <nome>NuovoGioco</nome>
-        <anno>2005</anno>
+        <anno>2009</anno>
         <genere>Arcade</genere>
         <pegi>Pegi 3</pegi>
         <sviluppatore>Valentin</sviluppatore>
@@ -135,7 +103,7 @@
     </Gioco>
     <Gioco tipo="XboxOne">
         <nome>NuovoGioco</nome>
-        <anno>2006</anno>
+        <anno>2016</anno>
         <genere>Arcade</genere>
         <pegi>Pegi 3</pegi>
         <sviluppatore>Valentin</sviluppatore>
@@ -146,7 +114,7 @@
     </Gioco>
     <Gioco tipo="Ps4">
         <nome>NuovoGioco</nome>
-        <anno>2007</anno>
+        <anno>2017</anno>
         <genere>Arcade</genere>
         <pegi>Pegi 3</pegi>
         <sviluppatore>Valentin</sviluppatore>

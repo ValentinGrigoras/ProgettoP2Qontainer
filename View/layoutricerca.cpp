@@ -12,8 +12,6 @@ LayoutRicerca::LayoutRicerca(QWidget * p):
     cbNome(new QCheckBox(this)),
     cercaPerTipo(new ComboBoxTipo(this)),
     cbTipo(new QCheckBox(this)),
-    cercaPerAnno(new ComboBoxAnno(this)),
-    cbAnno(new QCheckBox(this)),
     cercaPerPegi(new ComboBoxPegi(this)),
     cbPegi(new QCheckBox(this)),
     cerca(new QPushButton("Cerca",this)),
@@ -48,13 +46,11 @@ QHBoxLayout *filtri_button = new QHBoxLayout();
 QVBoxLayout *main_layout = new QVBoxLayout();
 cercaPerNome->setEnabled(false);
 cercaPerTipo->setEnabled(false);
-cercaPerAnno->setEnabled(false);
 cercaPerPegi->setEnabled(false);
 
 cbNome->setEnabled(true);
 cbTipo->setEnabled(true);
 cbPegi->setEnabled(true);
-cbAnno->setEnabled(true);
 
 QGroup_set_filter->setStyleSheet("QGroupBox::title {subcontrol-origin: margin;subcontrol-position: top center;} QGroupBox{ font-size: 10pt;font-weight: bold;color:#00264d; padding: 8px;border: 2px solid #00264d;}");
 cerca->setStyleSheet("QPushButton:pressed {background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:1 rgb(0,64,128))} QPushButton{background-color:#00264d; color:#e6e6e6; border: 1px solid black; border-radius: 5px; padding: 8px; font-size:9pt; font-weight:bold; margin-top:10px}");
@@ -73,10 +69,6 @@ label_nome->setStyleSheet("QLabel{font-size : 10pt; font-weight: bold; color:#00
 activate_layout->addWidget(label_nome);
 activate_layout->addWidget(cbNome);
 
-QLabel * label_anno = new QLabel(tr("Anno"));
-label_anno->setStyleSheet("QLabel{font-size : 10pt; font-weight: bold; color:#00264d;}");
-activate_layout->addWidget(label_anno);
-activate_layout->addWidget(cbAnno);
 
 QLabel * label_pegi = new QLabel(tr("Pegi"));
 label_pegi->setStyleSheet("QLabel{font-size : 10pt; font-weight: bold; color:#00264d;}");
@@ -97,17 +89,14 @@ label_set_Pegi->setStyleSheet("QLabel{font-size : 10pt; font-weight: bold; color
 
 cercaPerTipo->setStyleSheet("QComboBox{font-size : 10pt; font-weight: bold; color:#00264d;}");
 cercaPerNome->setStyleSheet("QComboBox{font-size : 10pt; font-weight: bold; color:#00264d;}");
-cercaPerAnno->setStyleSheet("QComboBox{font-size : 10pt; font-weight: bold; color:#00264d;}");
 cercaPerPegi->setStyleSheet("QComboBox{font-size : 10pt; font-weight: bold; color:#00264d;}");
 
 set_filters_layout->addWidget(label_set_Tipo,0,0,1,3);
 set_filters_layout->addWidget(cercaPerTipo,1,0,1,3);
 set_filters_layout->addWidget(label_set_Name,0,3,1,3);
 set_filters_layout->addWidget(cercaPerNome,1,3,1,3);
-set_filters_layout->addWidget(label_set_Anno,0,6,1,3);
-set_filters_layout->addWidget(cercaPerAnno,1,6,1,3);
-set_filters_layout->addWidget(label_set_Pegi,0,9,1,3);
-set_filters_layout->addWidget(cercaPerPegi,1,9,1,3);
+set_filters_layout->addWidget(label_set_Pegi,0,6,1,3);
+set_filters_layout->addWidget(cercaPerPegi,1,6,1,3);
 
 QGroup_set_filter->setLayout(set_filters_layout);
 QGroup_set_filter->setFixedHeight(110);
@@ -133,7 +122,6 @@ setLayout(main_layout);
 
 connect(cbNome,SIGNAL(clicked(bool)),this,SLOT(slotDisableElements()));
 connect(cbTipo,SIGNAL(clicked(bool)),this,SLOT(slotDisableElements()));
-connect(cbAnno,SIGNAL(clicked(bool)),this,SLOT(slotDisableElements()));
 connect(cbPegi,SIGNAL(clicked(bool)),this,SLOT(slotDisableElements()));
 
 }
@@ -148,10 +136,6 @@ ComboBoxTipo *LayoutRicerca::getCercaPerTipo() const
     return cercaPerTipo;
 }
 
-ComboBoxAnno *LayoutRicerca::getCercaPerAnno() const
-{
-    return cercaPerAnno;
-}
 
 ComboBoxPegi *LayoutRicerca::getCercaPerPegi() const
 {
@@ -163,10 +147,6 @@ QCheckBox *LayoutRicerca::getCbNome() const
     return cbNome;
 }
 
-QCheckBox *LayoutRicerca::getCbAnno() const
-{
-    return cbAnno;
-}
 
 QCheckBox *LayoutRicerca::getCbPegi() const
 {
@@ -197,15 +177,14 @@ void LayoutRicerca::slotDisableElements() const
 {
     cbTipo->isChecked()?
                 cercaPerTipo->setEnabled(true):
-                cercaPerTipo->setEnabled(false);
+               cercaPerTipo->setEnabled(false);
+
+
 
     cbNome->isChecked()?
                 cercaPerNome->setEnabled(true):
                 cercaPerNome->setEnabled(false);
 
-    cbAnno->isChecked()?
-                cercaPerAnno->setEnabled(true):
-                cercaPerAnno->setEnabled(false);
 
     cbPegi->isChecked()?
                 cercaPerPegi->setEnabled(true):
@@ -217,7 +196,6 @@ void LayoutRicerca::slotResetRicerca() const
     cercaPerNome->clear();
     cercaPerTipo->setCurrentIndex(0);
     cercaPerPegi->setCurrentIndex(0);
-    cercaPerAnno->setCurrentIndex(0);
     list->clear();
      list->update();
 }

@@ -23,8 +23,10 @@ LayoutVisualizzaItem* dialog;
 public:
 Controller(GestioneGiochi*, QWidget* =nullptr);
 ~Controller();
-signals:
 
+
+private slots:
+    void ChangeComboContent(QString);
 public slots:
  void slotShowInserisci()const;
 // void slotShowVisualizza()const;

@@ -41,8 +41,6 @@ private:
   QTextEdit *textEditDescrizione;
     QGroupBox * FeaturesGroup();
 
-private slots:
- //void slotAzzera()const;
 
 public:
     LayoutInserisci(QWidget* =nullptr);

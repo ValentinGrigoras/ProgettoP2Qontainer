@@ -39,7 +39,7 @@ public:
     //setter
     void setNome(string pNome); /*p sta per parametro della funzione, ovvero pNome = variabile nome intesa come
  parametro di una certa funzione. Utile per distinguere i campi dati di una classe con i parametri di una funzione*/
-    void setAnnoRilascio(int pAnnoRilascio);
+    void setAnnoRilascio(string  pAnnoRilascio);
     void setGenere(char pGenere);
     void setClassificazionePegi(string  pClassificazionePegi);
      void setDescrizione(const string &value);
@@ -54,10 +54,6 @@ public:
 
     //distruttore virtuale
     virtual ~Gioco()=default; //c++11
-
-protected:
-    //metodo virtuale puro
-virtual unsigned short int getAnnoRilascioMinimo()const = 0; // questo metodo mi ritorna l'anno minimo che può avere un gioco come anno di rilascio, in quanto coincide con l'anno dell'uscita della piattaforma del gioco. Per esempio il PS3 è uscito nel 2006, quindi non ci possono essere giochi sulla PS3 usciti prima di quella data.
 
     //operatori
     virtual bool operator==(const Gioco&) const;
